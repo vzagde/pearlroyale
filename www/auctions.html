@@ -1,0 +1,124 @@
+    <section class="page">
+        <div class="col-sm-12 col-xs-12 istyleback">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                <label onclick="go_backfrom_auction();" class="col-sm-2 col-xs-2"><i class="fa fa-angle-left"></i></label>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a><img src="images/PRLogo.png"></a>
+                </div>
+                <div class="col-sm-4 col-xs-4 headtitle">
+                    <a class="navbar-brand">Auctions</a>
+                </div>
+            </div>
+        </div>
+        <div class="row gridsecoth">
+                <div id="auctionlist" class="col-xs-12 col-sm-12 recup">
+                    <div id="list1" class="container-fluid auc1">
+                    </div>
+                    <div id="list2" class="container-fluid auc2">
+                    </div>
+                    <div id="list3" class="container-fluid auc3">
+                    </div>
+                    <div id="list4" class="container-fluid auc4">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="category_id" id="category_id">        
+    </section>
+    <script type="text/javascript">
+        function go_backfrom_auction(){
+          $('#list1').empty();
+          $('#list2').empty();
+          $('#list3').empty();
+          $('#list4').empty();
+          document.getElementById('cat_id').value = '';
+          document.getElementById('auction').style.display = 'none';
+          document.getElementById('home').style.display = 'block';
+/*          get_bidded_prod(id);*/
+        }
+
+        function get_auctionslist(id){
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1;
+            var yyyy = today.getFullYear();
+            var hh = today.getHours();
+            var ii = today.getMinutes()+1;
+            var ss = today.getSeconds();
+            if(dd<10){
+                dd='0'+dd
+            } 
+            if(mm<10){
+                mm='0'+mm
+            } 
+            var curr_date = yyyy+'-'+mm+'-'+dd+' '+hh+':'+ii+':'+ss;
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_auctions  ',
+                datatype: 'json',
+                type: 'post',
+                data: {
+                    id: category_id,
+                },
+                success: function(data){
+                    $.each(data, function(index, value) {
+                        var start = value.auction_start+' '+value.auction_start_time;
+                        var end = value.auction_end+' '+value.auction_end_time;
+                        var archive = value.auction_archive+' '+value.auction_archive_time;
+                        if(value.id == 0){
+                            var title = $(document.createElement('h4')).html('Auctions not available for this category')
+                            var hr = $(document.createElement('hr'))
+                            $('.auc1').append(title).append(hr);
+                        } else {
+                            // if( curr_date > start && curr_date < end ){
+                                var anchor = $(document.createElement('a'));
+                                anchor.attr('id', value.id)
+                                anchor.attr('onClick', 'showProductlist(this.id);')
+                                anchor.attr('style', 'text-decoration: none')
+                                var title = $(document.createElement('h4')).html(value.auction_name)
+                                var content = $(document.createElement('p')).html(value.address)
+                                content.attr('style', 'color: #fff')
+                                content.attr('class', 'pad0')
+                                var hr = $(document.createElement('hr'))
+                                hr.attr('class', 'martb10')
+                                $('.auc1').append(anchor.append(title).append(content)).append(hr);
+                            // }
+                            // if( curr_date < start ){
+                                var anchor = $(document.createElement('a'));
+                                anchor.attr('id', value.id)
+                                anchor.attr('onClick', 'showProductlist(this.id);')
+                                anchor.attr('style', 'text-decoration: none')
+                                var title = $(document.createElement('h4')).html(value.auction_name)
+                                var content = $(document.createElement('p')).html(value.address)
+                                content.attr('style', 'color: #fff')
+                                content.attr('class', 'pad0')
+                                var hr = $(document.createElement('hr'))
+                                hr.attr('class', 'martb10')
+                                $('.auc2').append(anchor.append(title).append(content)).append(hr);
+                            // }
+                            // if( curr_date > end && curr_date < archive ){
+                                var anchor = $(document.createElement('a'));
+                                anchor.attr('id', value.id)
+                                anchor.attr('onClick', 'showProductlist(this.id);')
+                                anchor.attr('style', 'text-decoration: none')
+                                var title = $(document.createElement('h4')).html(value.auction_name)
+                                var content = $(document.createElement('p')).html(value.address)
+                                content.attr('style', 'color: #fff')
+                                content.attr('class', 'pad0')
+                                var hr = $(document.createElement('hr'))
+                                hr.attr('class', 'martb10')
+                                $('.auc3').append(anchor.append(title).append(content)).append(hr);
+                            // }
+                        }
+                    })
+                }
+            })
+           document.getElementById('category_id').value = category_id;
+        }        
+
+        function showProductlist(auction_id){
+            var category_id = document.getElementById('category_id').value;
+            document.getElementById('auction').style.display = 'none';
+            document.getElementById('prodlist').style.display = 'block';
+            get_prod_listdata(auction_id, category_id);
+        }
+    </script>

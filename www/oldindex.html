@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Pearl Royale</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/navmenu.css" rel="stylesheet">
+    <style type="text/css">
+        .page {
+            width: 100%;
+            height: 100;
+            position: absolute;
+            top: 50;
+            left: 0;
+        }
+        .istyleback i {
+            font-size: 30px;
+            font-weight: bold;
+            color: #000;
+            margin-top: 10px;
+        }
+        .istyle i {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+        }
+        .istylehead i {
+            font-size: 15px;
+            font-weight: bold;
+            color: #000;
+        }
+        .istylecat i {
+            font-size: 50px;
+            font-weight: bold;
+            color: #000;
+        }
+        .gridsec {
+            padding: 5% 0;
+            background: #EEEEE0 !important;
+        }
+        .cellcss {
+            border: 2px #EEEEE0 solid !important;
+            display: inline-block;
+            background-color: #fff;
+            padding: 15px 15px !important;
+        }
+        .recup {
+            padding: 5% 0;
+        }
+        .iconscls i {
+            font-size: 16px;
+        }
+        .catimg img {
+            width: 50px;
+            height: 50px;
+        }
+        .btnsys {
+            margin-left: 0px !important;
+        }
+        .imgsys {
+            padding: 5px !important;
+        }
+        .auc1 {
+            background-color: rgba(50, 205, 50, 0.5);
+        }
+        .auc2 {
+            background-color: rgba(30, 144, 255, 0.5);
+        }
+        .auc3 {
+            ` background-color: rgba(255, 0, 0, 0.5);
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            get_categories()
+        })
+
+        //get categories
+        function get_categories() {
+            $.ajax({
+                url: 'http://casaestilo.in/pearlroyale/index.php/api/get_categories',
+                datatype: 'json',
+                success: function(data) {
+                    console.log(data);
+                    display_categories(data)
+                }
+            })
+        }
+
+        function display_categories(data) {
+
+            $.each(data, function(index, value) {
+                console.log(value.id);
+                var anchor = $(document.createElement('a'));
+                anchor.attr('id', value.id)
+                anchor.attr('href', '#auction')
+                var imgsrc = 'http://casaestilo.in/pearlroyale/assets/uploads/'.concat(value.image);
+                var item = $(document.createElement('div'));
+                item.attr('class', 'col-lg-4 col-xs-4 col-md-4 col-sm-4 cellcss')
+                var img = $('<img>');
+                img.attr('src', imgsrc);
+                var content = $(document.createElement('h4')).html(value.category_name)
+                $('#categories').append(item.append(anchor.append(img).append(content)));
+            })
+        }
+
+        //get auctions list
+        function get_auctionlist(cat_id) {
+            $.ajax({
+                url:'http://casaestilo.in/pearlroyale/index.php/api/get_auctions/',
+                type: 'post',
+                data: {
+                        id: cat_id,
+                        filter: 'ended'
+                },
+                success: function(data){
+                    console.log(data);
+                    display_auctionlist(data)
+                }
+            })            
+        }
+
+        function display_auctionlist(data){
+            $.each(data, function(index, value) {
+            console.log(value.id);
+            var div = $(document.createElement('div'))
+            div.attr('class','container-fluid auc2')
+            var name = $(document.createElement('h3')).html(value.auction_name)
+            var city = $(document.createElement('p')).html(value.city)
+            $('#auctionlist').append(div.append(name).append(city));            
+        })
+        }
+
+        function validateEmail(email){
+        var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+            if (reg.test(email.value) == false) 
+            {
+                alert('Invalid Email Address');
+                return false;
+            }
+            return true;
+        }   
+
+
+        function submit_data(){
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var cpassword = document.getElementById('cpassword').value;
+            var tel = document.getElementById('tel').value;
+            var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+            if(reg.test(email) != false && password != null && tel != null){
+
+                if(password == cpassword){
+
+                    $.ajax({
+                        url:'http://casaestilo.in/pearlroyale/index.php/api/register_new_user/',
+                        type: 'post',
+                        data: {
+                            email: email,
+                            password: password,
+                            tel: tel
+                        },
+                        success: function(data){
+                            if(data == 'success'){
+                                    alert('success')
+                            }
+                            else {
+                                    alert('failed')
+                            }
+                        }
+                    })
+
+                } else {
+
+                alert('Confirm Password does not match')
+                }
+            } else {
+
+            alert('Fill all the fields')
+            
+            }
+        }
+
+        function signup(){
+            var email = document.getElementById("email").value
+            var password = document.getElementById("password").value
+            var tel = document.getElementById("tel").value
+
+            $.ajax({
+                url:'http://casaestilo.in/pearlroyale/index.php/api/register_new_user',
+                type: 'post',
+                data: {
+                        username: email,
+                        password: password,
+                        eamil: eamil,
+                        tel: tel
+                },
+                success: function(data){
+                    if(data == 'success'){
+                        alert('Registered Successfully')
+                    } else {
+                        alert('Something went wrong please try again later')          
+                    }
+                }
+            })            
+        }
+
+        var curr_view = 'home';
+    </script>
+</head>
+
+<body>
+
+    <!-- Section Home -->
+    <section id="home" class="page" style="overflow-x: hidden !important">
+        <div class="navmenu navmenu-default navmenu-fixed-left offcanvas-sm" style="z-index: 1000; margin-top: 10%; overflow-x: hidden !important;">
+            <ul class="nav navmenu-nav">
+                <li style="border-bottom: 1px solid rgb(0, 0, 0);border-top: px;">
+                    <a href="#notification">Notification</a>
+                </li>
+                <li style="border-bottom: 1px solid rgb(0, 0, 0);border-top: px;">
+                    <a href="#myfav">My Favourite</a>
+                </li>
+                <li style="border-bottom: 1px solid rgb(0, 0, 0);border-top: px;">
+                    <a href="#mybid">My Bid</a>
+                </li>
+                <li style="border-bottom: 1px solid rgb(0, 0, 0);border-top: px;">
+                    <a href="#recentviewed">Recent Viewed</a>
+                </li>
+                <li style="border-bottom: 1px solid rgb(0, 0, 0);border-top: px;">
+                    <a href="#aboutpr">About Pearl Royale</a>
+                </li>
+                <li style="border-bottom: 1px solid rgb(0, 0, 0);border-top: px;">
+                    <a href="#myacc">My Account</a>
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyle text-center">
+                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                        <a href=""><i class="fa fa-thumbs-up"></i></a>
+                        <p>Rate Us</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                        <a href=""><i class="fa fa-share"></i></a>
+                        <p>Share</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                        <a href=""><i class="fa fa-envelope"></i></a>
+                        <p>Feed Back</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istylehead" style="overflow-x: hidden !important">
+                <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                    <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
+                        <button type="button" class="navbar-toggle btnsys" data-toggle="offcanvas" data-target=".navmenu">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" text-center style="padding-top: 7px;">
+                        <a href="#home" class="imgsys"><img src="images/Logo.png"> Pearl Royale</a>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 iconscls" style="margin-top: 15px;padding-right: 1em;">
+                        <a style="padding-left: 6%;"> <i class="fa fa-star"></i>
+                        </a>
+                        <a style="padding-left: 6%;"> <i class="fa fa-heart"></i>
+                        </a>
+                        <a style="padding-left: 6%;"> <i class="fa fa-pencil"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 gridsec">
+                    <div id="categories" class="container-fluid text-center spancls istylecat catimg">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 recup">
+                    <div class="col-lg-4 col-xs-4 col-md-4 col-sm-4">
+                        <img src="images/Saph.png" style="" class="img-responsive">
+                    </div>
+                    <div class="col-lg-8 col-xs-8 col-md-8 col-sm-8">
+                        <div class="container-fluid">
+                            <h3>Recently Viewed Items</h3>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>  
+
+    <!-- Section AuctionList -->
+    <section id="auction" class="page" style="display: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyleback">
+                    <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
+                            <a href="#home"><i class="fa fa-angle-left"></i></a>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" style="padding-top: 10px;">
+                            <a href="#home"><img src="images/Logo.png">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left: 0px;">
+                            <a class="navbar-brand">Auctions</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-header">
+                <h1>Auctions</h1>
+            </div>
+            <div class="row">
+                <div id="auctionlist" class="col-lg-12 col-xs-12 col-md-12 col-sm-12 recup text-center">
+                    <div id="list2" class="container-fluid auc2">
+                        <h3>Auction Name 1</h3>
+                        <p> Auction Description</p>
+                    </div>
+                    <div id="list3" class="container-fluid auc3">
+                        <h3>Auction Name 1</h3>
+                        <p> Auction Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section2 Notifications -->
+    <section id="notification" class="page" style="display: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyleback">
+                    <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
+                            <a href="#home"><i class="fa fa-angle-left"></i></a>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" style="padding-top: 10px;">
+                            <a  href="#home"><img src="images/Logo.png">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left: 0px;">
+                            <a class="navbar-brand">Notifications</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-header">
+                <h1>Notifications</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 recup">
+                    <div class="col-lg-4 col-xs-4 col-md-4 col-sm-4">
+                        <img src="images/Saph.png" style="" class="img-responsive">
+                    </div>
+                    <div class="col-lg-8 col-xs-8 col-md-8 col-sm-8">
+                        <div class="container-fluid">
+                            <h3>Title</h3>
+                            <h4>Amount</h4>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Section3 MyFavourites -->
+    <section id="myfav" class="page" style="display: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyleback">
+                    <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
+                            <a href="#home"><i class="fa fa-angle-left"></i></a>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" style="padding-top: 10px;">
+                            <a href="#home"><img src="images/Logo.png">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left: 0px;">
+                            <a class="navbar-brand">My Favourites</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-header">
+                <h1>My Favourites</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 recup">
+                    <div class="col-lg-4 col-xs-4 col-md-4 col-sm-4">
+                        <img src="images/Saph.png" style="" class="img-responsive">
+                    </div>
+                    <div class="col-lg-8 col-xs-8 col-md-8 col-sm-8">
+                        <div class="container-fluid">
+                            <h3>Item Name</h3>
+                            <h4>Amount</h4>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Section4 MyBid -->
+    <section id="mybid" class="page" style="display: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyleback">
+                    <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
+                            <a href="#home"><i class="fa fa-angle-left"></i></a>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" style="padding-top: 10px;">
+                            <a href="#home"><img src="images/Logo.png">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left: 0px;">
+                            <a class="navbar-brand">My Bid</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-header">
+                <h1>My Bid</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 recup">
+                    <div class="col-lg-4 col-xs-4 col-md-4 col-sm-4">
+                        <img src="images/Saph.png" style="" class="img-responsive">
+                    </div>
+                    <div class="col-lg-8 col-xs-8 col-md-8 col-sm-8">
+                        <div class="container-fluid">
+                            <h3>Item Name</h3>
+                            <h4>Amount</h4>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Section5 RecentViewed -->
+    <section id="recentviewed" class="page" style="display: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyleback">
+                    <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
+                            <a href="#home"><i class="fa fa-angle-left"></i></a>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" style="padding-top: 10px;">
+                            <a href="#home"><img src="images/Logo.png">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left: 0px;">
+                            <a class="navbar-brand">Recently Viewed</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-header">
+                <h1>Recently Viewed Items</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 recup">
+                    <div class="col-lg-4 col-xs-4 col-md-4 col-sm-4">
+                        <img src="images/Saph.png" style="" class="img-responsive">
+                    </div>
+                    <div class="col-lg-8 col-xs-8 col-md-8 col-sm-8">
+                        <div class="container-fluid">
+                            <h3>Item Name</h3>
+                            <h4>Amount</h4>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Section6 About Pearl Royal -->
+    <section id="aboutpr" class="page" style="display: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyleback">
+                    <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
+                            <a href="#home"><i class="fa fa-angle-left"></i></a>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" style="padding-top: 10px;">
+                            <a href="#home"><img src="images/Logo.png">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left: 0px;">
+                            <a class="navbar-brand">About Pearl Royale</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-header">
+                <h1>About Pearl Royale</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 recup">
+                    <div class="col-lg-4 col-xs-4 col-md-4 col-sm-4">
+                        <img src="images/Logo1.png" style="" class="img-responsive">
+                    </div>
+                    <div class="col-lg-8 col-xs-8 col-md-8 col-sm-8">
+                        <div class="container-fluid">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Section7 My Account -->
+    <section id="myacc" class="page" style="display: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyleback">
+                    <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
+                            <a href="#home"><i class="fa fa-angle-left"></i></a>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" style="padding-top: 10px;">
+                            <a href="#home"><img src="images/Logo.png">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left: 0px;">
+                            <a class="navbar-brand">Account</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <h1 class="text-center login-title">Sign In To Pearl Royale</h1>
+                    <div class="account-wall">
+                        <form class="form-signin">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <input type="email" class="form-control" placeholder="Email" required autofocus validate>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <input type="password" class="form-control" placeholder="Password" required>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                                    Sign in</button>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 formnav" style="padding-top: 2%;">
+                                <a href="#forgotpass" class="pull-right">Forgot Password ?</a>
+                                <a href="#register" class="text-center">Sign Up</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!--   Section8 Register -->
+    <section id="register" class="page" style="display: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyleback">
+                    <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
+                            <a href="#myacc"><i class="fa fa-angle-left"></i></a>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" style="padding-top: 10px;">
+                            <a href="#home"><img src="images/Logo.png">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left: 0px;">
+                            <a class="navbar-brand">Register</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <h1 class="text-center login-title">Register To Pearl Royale</h1>
+                    <div class="account-wall">
+                      <form class="form-signin" method="post">
+                        <div class="control-group">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <!-- <input type="email" id="email" class="form-control" placeholder="Email" required> -->
+                                <input class="form-control" data-validation-required-message="Please enter your email" id="email" placeholder="Email" required="" type="email">
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <input type="password" id="password" class="form-control" placeholder="Password" required>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <input type="password" id="cpassword" class="form-control" data-validation-matches-match="password" data-validation-matches-message="Must match password entered above" placeholder="Confirm Password" required>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <input id="tel" type="tel" class="form-control" placeholder="Phone Number" required>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <div class="btn-group">
+                                    <button class="btn dropdown-toggle" data-toggle="dropdown">City<span class="caret"></span>
+                                    </button>
+                                    <ul id="city" class="dropdown-menu">
+                                        <li>City 1</li>
+                                        <li>City 2</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <div class="btn-group">
+                                    <button class="btn dropdown-toggle" data-toggle="dropdown">Country<span class="caret"></span>
+                                    </button>
+                                    <ul id="country" class="dropdown-menu">
+                                        <li>Country 1</li>
+                                        <li>Country 2</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 2%;">
+                                <label class="checkbox pull-left">
+                                    <input type="checkbox" value="remember-me">
+                                    <strong>I agree to the Pearl Royale <a target="_blank" id="TosLink" href="https://accounts.google.com/TOS?loc=IN&hl=en">Terms of Service</a> and <a target="_blank" id="PrivacyLink" href="https://accounts.google.com/TOS?loc=IN&hl=en&privacy=true">Privacy Policy</a></strong>
+                                </label>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <p class="help-block" style=""></p>
+                                <button onclick="return submit_data();" class="btn btn-lg btn-primary btn-block" type="submit">
+                                    Regitser</button>
+                            </div>
+                        </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div <!-- /.container -->
+        </section>
+    <!--   Section9 ForgotPassword -->
+    <section id="forgotpass" class="page" style="display: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyleback">
+                    <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
+                            <a href="#myacc"><i class="fa fa-angle-left"></i></a>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" style="padding-top: 10px;">
+                            <a href="#home"><img src="images/Logo.png">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left: 0px;">
+                            <a class="navbar-brand">Change Password</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <h1 class="text-center login-title">Change Your Password</h1>
+                    <div class="account-wall">
+                        <form class="form-signin">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <input type="email" class="form-control" placeholder="Email" required autofocus validate>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <input type="password" class="form-control" placeholder="Pin" required>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <button class="btn btn-lg btn-primary btn-block formnav" type="submit">
+                                    <a href="#changepass"></a>
+                                    Create Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </section>
+
+
+    <!-- Section10 Create Password -->
+    <section id="changepass" class="page" style="display: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyleback">
+                    <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1 istyle">
+                            <a href="#myacc"><i class="fa fa-angle-left"></i></a>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" style="padding-top: 10px;">
+                            <a href="#home"><img src="images/Logo.png">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left: 0px;">
+                            <a class="navbar-brand">Create Password</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <h1 class="text-center login-title">Create Your Password</h1>
+                    <div class="account-wall">
+                        <form class="form-signin">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <input type="password" class="form-control" placeholder="Password" required>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <input type="password" class="form-control" placeholder="Confirm Password" required>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-top: 4%;">
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                                    Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!--  Section11 Bid -->
+    <section id="bid" class="page" style="display: none">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 istyleback">
+                    <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1 istyle">
+                            <a href="index.html"><i class="fa fa-angle-left"></i></a>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" style="padding-top: 10px;">
+                            <a href="#home"><img src="images/Logo.png">
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left: 0px;">
+                            <a class="navbar-brand">Bid</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-header">
+                <h1>Bid</h1>
+            </div>
+        </div>
+        <!-- Image Slider -->
+        <div class="container-fluid" style="margin-top: -30px;">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="carousel slide" id="myCarousel">
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <div class="bannerImage">
+                                    <a href="#"><img src="http://placehold.it/960x405" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- /Slide1 -->
+                            <div class="item">
+                                <div class="bannerImage">
+                                    <a href="#"><img src="http://placehold.it/960x405" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- /Slide2 -->
+                            <div class="item">
+                                <div class="bannerImage">
+                                    <a href="#"><img src="http://placehold.it/960x405" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- /Slide2 -->
+                        </div>
+                        <div class="control-box">
+                            <a data-slide="prev" href="#myCarousel" class="carousel-control left" style="margin-top: 0px;">‹</a>
+                            <a data-slide="next" href="#myCarousel" class="carousel-control right" style="margin-top: 0px;">›</a>
+                        </div>
+                        <!-- /.control-box -->
+                    </div>
+                    <!-- /#myCarousel -->
+                </div>
+                <!-- /.span12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+        <!--End Image Slider -->
+        <div class="container" style="margin-top: -100px;">
+            <div class="row">
+                <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 recup">
+                    <div class="col-lg-8 col-xs-8 col-md-8 col-sm-8">
+                        <div class="container-fluid">
+                            <h3>Item Name</h3>
+                            <h4>Floor Price</h4>
+                            <h4>Bid Price</h4>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- /.container -->
+    </section>
+
+
+
+    <!-- Bootstrap core JavaScript
+================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jqBootstrapValidation.js"></script>
+    <script src="js/jasny-bootstrap.min.js"></script>
+
+
+
+    <script>
+        $(document).ready(function() {
+            $('.navmenu-nav a').click(function(e) {
+                e.preventDefault();
+                to = $(this).attr('href')
+                $('.page').fadeOut('fast', function() {
+                    $(to).fadeIn('fast');
+                });
+            })
+        })
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('.navbar a').click(function(e) {
+                e.preventDefault();
+                to = $(this).attr('href')
+                $('.page').fadeOut('fast', function() {
+                    $(to).fadeIn('slow');
+                });
+            })
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.formnav a').click(function(e) {
+                e.preventDefault();
+                to = $(this).attr('href')
+                $('.page').fadeOut('fast', function() {
+                    $(to).fadeIn('fast');
+                });
+            })
+        })
+    </script>
+        <script>
+        $(document).ready(function() {
+            $('#categories a').click(function(e) {
+                e.preventDefault();
+                to = $(this).attr('href')
+                $('.page').fadeOut('fast', function() {
+                    $(to).fadeIn('fast');
+                });
+            })
+        })
+    </script>
+    <script>
+        $(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
+    </script>
+</body>
+</html>

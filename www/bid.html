@@ -1,0 +1,550 @@
+    <link rel="stylesheet" type="text/css" href="css/owl.carousel.css">
+    <style>
+        #owl-demo .item{
+          display: block;
+          cursor: pointer;
+/*          background: #ffd800;*/
+          padding: 30px 0px;
+          margin: 5px;
+          color: #FFF;
+          -webkit-border-radius: 3px;
+          -moz-border-radius: 3px;
+          border-radius: 3px;
+          text-align: center;
+          -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+        }
+
+        .owl-carousel{
+            padding: 5%;
+        }
+
+        .owl-item{
+            height: 300px;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="css/owl.theme.css">
+    <section class="page" id="loader" style="z-index: 999; background: #fff; display: none">
+        <img src="img/loading.gif" alt="" class="loaderimg img-responsive">
+    </section>
+    <section class="page bidpage">
+        <div class="row">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                <label class="col-sm-2 col-xs-2 istyleback" onclick="go_backfrom_productinfo();"><i class="fa fa-angle-left"></i></label>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a><img src="images/PRLogo.png"></a>
+                </div>
+                <div class="col-sm-5 col-xs-5 headtitle">
+                    <a class="navbar-brand">Product Details</a>
+                </div>
+                <div class="col-sm-2 col-xs-2 headtitle starstylei">
+                    <a> <i id="star" onclick="mark_favourite();" class="fa fa-star starstyle"></i></a>
+                </div>
+            </div>
+        </div> 
+        <!-- getting-started -->
+        <div id="" style="margin-top: 16%">
+            <div class="timer">
+                <span class="days">00</span>:<span class="hour">00</span>:<span class="minute">00</span>:<span class="second">00</span>
+            </div>
+        </div>
+        <div id="productinfo" class="productbidifodisp" style="margin-top: 0% !important">
+        </div>
+        <h4>Click On the Image for the Full View...<sup>*</sup></h4>
+            <div id="owl-demo" class="owl-carousel slider-for-images">
+                <a class="item link"><img src="http://pearlroyale.com/pearlroyale_admin/assets/uploads/5e850-image.jpeg"></a>
+                <a class="item link"><img src="http://pearlroyale.com/pearlroyale_admin/assets/uploads/5e850-image.jpeg"></a>
+                <a class="item link"><img src="http://pearlroyale.com/pearlroyale_admin/assets/uploads/5e850-image.jpeg"></a>
+                <a class="item link"><img src="http://pearlroyale.com/pearlroyale_admin/assets/uploads/5e850-image.jpeg">></a>
+                <a class="item link"><img src="http://pearlroyale.com/pearlroyale_admin/assets/uploads/5e850-image.jpeg"></a>
+                <a class="item link"><img src="http://pearlroyale.com/pearlroyale_admin/assets/uploads/5e850-image.jpeg"></a>
+            </div>
+        <div id="description" class="productbidifodisp"></div>
+        <div id="filters" class="productbidifodisp" style="text-align: left  !important; margin-left: 7%"></div>
+        <div class="col-xs-12 col-sm-12 marginset">
+            <button id="bidButton" class="btn btn-success" onclick="showbidDetails();">Bid</button>
+        </div>
+    </section>
+    <!-- All The JS Files -->
+    <script type="text/javascript" src="js/slider/jquery-1.11.0.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script src="js/timer_script.js"></script>
+    <script src="js/owl.carousel.js"></script>
+    <script type="text/javascript">
+    var initime = 0;
+        $(document).ready(function() {
+            $("#owl-demo").owlCarousel({
+                navigation : true,
+                slideSpeed : 300,
+                paginationSpeed : 400,
+                singleItem:true
+            });
+
+            $(".next").click(function(){
+                owl.trigger('owl.next');
+            })
+            $(".prev").click(function(){
+                owl.trigger('owl.prev');
+            })
+        });
+
+    function create_uirel(user_id, product_id){
+        $.ajax({
+            url:'http://pearlroyale.com/pearlroyale_admin/index.php/api/rel_exists/',
+            type: 'post',
+            data: {
+                user_id : user_id,
+                product_id : product_id 
+            },
+            success: function(data){                
+            }
+        })
+    }
+
+    function mark_favourite(){
+        id = document.getElementById('prod_id').value;
+        user = document.getElementById('user_id').value;
+        $.ajax({
+            url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/mark_favourite/',
+            type: 'post',
+            data: {
+                user_id : user,
+                item_id : id
+            },
+            success: function(data){
+                if(data.id == 0){
+                    $("#star").css("color", "gray");
+                } else {
+                    $("#star").css("color", "rgb(249, 255, 0)");
+                }
+            }
+        });
+    }
+
+        // function load_countdown(id){
+        //     user_id = document.getElementById('user_id').value;
+        //     $.ajax({
+        //         url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_products_info/',
+        //         type: 'post',
+        //         data: {
+        //             product_id : id,
+        //             user_id : user_id
+        //         },
+        //         success: function(data){
+        //             data = data[0];
+        //             var bid_time = data.bid_time;
+        //             $.getScript("js/jquery.countdown.js", function(data, textStatus, jqxhr){
+        //                 display_countdown(bid_time);
+	       //          });
+        //             // display_countdown(bid_time);
+        //         }
+        //     });
+        // }
+
+        function load_countdown(id){
+            user_id = document.getElementById('user_id').value;
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_products_info/',
+                type: 'post',
+                data: {
+                    product_id : id,
+                    user_id : user_id
+                },
+                success: function(data){
+                    data = data[0];
+                    var bid_time = data.bid_time;
+                    display_countdown(bid_time);
+                }
+            });
+        }
+
+        setInterval(function(){
+        get_prodbid_refreshbiddata();
+        }, 5000);
+
+        function get_prodbid_refreshbiddata(){
+            var pro_id = document.getElementById('prod_id').value
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_bid_amount/',
+                type: 'post',
+                data: {
+                    product_id: pro_id
+                },
+                success: function(data) {
+                    display_refresh_bid(data);
+                    chk_bid();
+                }
+            })
+        }
+
+        function display_refresh_bid(data){
+            $.each(data, function(index, value){
+                $('#divbid').empty();
+                var bidtxt = $(document.createElement('h5')).html('Bid Amt '+value.currency_type)
+                var bidamt = $(document.createElement('h4')).html(value.bid_amount)
+                $('#divbid').append(bidtxt).append(bidamt);
+            })
+        }
+
+        // function display_countdown(bid_time){
+        //     console.log(bid_time);
+        //     $("#getting-started").countdown(new Date(bid_time), function(event) {
+        //         // console.log("success");
+        //         console.log(bid_time);
+        //         $("#getting-started").text('');
+        //         $("#getting-started").text(event.strftime('%D Days %H:%M:%S'));
+        //     });
+        //     // $('div#clock').countdown(austDay)
+        //     // var austDay = new Date(bid_time);
+        //     // $('#getting-started').countdown({until: austDay});
+        //     // $('#year').text(austDay.getFullYear());
+        // }
+
+        function display_countdown(bid_time){
+            // Date conversion code for IOS
+            var arr = bid_time.split(/[- :]/);
+            d = new Date(arr[0], arr[1]-1, arr[2], arr[3], arr[4], arr[5]);
+            // Date COnversion code for Android
+            // var d = new Date(bid_time);
+            var c = new Date(Date());
+            var dif = d.getTime() - c.getTime();
+            var curr_time = dif/1000;
+
+            console.log(curr_time);
+
+            if(curr_time < 0){
+                curr_time = 0;
+            }
+            timer.stop();
+            console.log("Function has been stopped and getting restarted");
+            timer.reset(curr_time);
+            timer.start(1000);
+        }
+
+        function go_backfrom_productinfo(){
+            $('#productinfo,#slideshow,#filters,#description').empty();
+            $('#bidButton').css('background', '#00b300');
+            $('#bidButton').css('disabled', 'false');
+            $('#bidButton').css('border-color', '#00b300');
+            $('#prod_id').val(0);
+            $('#divbid').css('background', '#00b300');
+            $('.bidamtback').css('background', 'rgba(0, 179, 0, 0.8)');
+            $('#bidButton').css('disabled', 'false');
+            $('#bidButton').css('border-color', 'rgba(0, 179, 0, 0.9)');
+            $('#divbid').css('background', '#00b300');
+            if (document.getElementById('cat_id').value == ''){
+                document.getElementById('bid').style.display = 'none';
+                document.getElementById('home').style.display = 'block';
+            } else {
+                document.getElementById('bid').style.display = 'none';
+                document.getElementById('prodlist').style.display = 'block';                
+            }
+            $("#loader").fadeOut(5000);
+        }
+
+        function onBackKeyDown(e) {
+            e.preventDefault();
+        }
+
+        function get_product_data(id){
+            $("#loader").show();
+            document.addEventListener("backbutton", onBackKeyDown, false);
+            document.getElementById('prod_id').value = id;
+            user_id = document.getElementById('user_id').value;
+            $('#productinfo,#slideshow,#filters,#description').empty();
+            $('#bidButton').css('background', '#00b300');
+            $('#bidButton').css('disabled', 'false');
+            $('#bidButton').css('border-color', '#00b300');
+            $('#divbid').css('background', '#00b300');
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_products_info/',
+                type: 'post',
+                data: {
+                    product_id : id,
+                    user_id : user_id
+                },
+                success: function(data){
+                    display_product_data(data);
+                }
+            })
+            var id = document.getElementById('prod_id').value;
+            load_countdown(id);
+        }
+
+        function showbidDetails(){
+            id = document.getElementById('prod_id').value;
+            document.getElementById('bid').style.display = 'none';
+            document.getElementById('makebid').style.display = 'block';
+            get_prodbiddata(id);
+        }
+
+        function autoload_function(){
+            $('#productinfo,#slideshow,#filters,#description').empty();
+            $('#bidButton').css('background', '#00b300');
+            $('#bidButton').css('disabled', 'false');
+            $('#bidButton').css('border-color', '#00b300');
+            $('#divbid').css('background', '#00b300');            
+        }
+        
+        var filetrdata;
+        var slideimages;
+        function display_product_data(data){
+            $.each(data, function(index, value){
+                document.getElementById('bid_time').value = value.bid_time;
+                product_id = value.id;
+                filterdata = value.filters;
+                slideimages = value.images;
+                var desc = $(document.createElement('p')).html(value.description)
+                var nimages = 'No. of Images: '.concat(value.num_images);
+                var imgsrc = 'http://pearlroyale.com/pearlroyale_admin/assets/uploads/'.concat(value.image);
+                var divcoli = $(document.createElement('div'))
+                divcoli.attr('class', 'col-xs-6 col-sm-6 limg');
+                var divcolsixi = $(document.createElement('div'))
+                divcolsixi.attr('class', 'row');
+                var divcolsix = $(document.createElement('div'))
+                divcolsix.attr('class', 'col-xs-6 col-sm-6');
+                var divrow = $(document.createElement('div'))
+                divrow.attr('class', 'row');
+                var divfloor = $(document.createElement('div'))
+                divfloor.attr('class', 'col-xs-6 col-sm-6 flooramtback');
+                var divbid = $(document.createElement('div'))
+                divbid.attr('id', 'bidamtdiv');
+                divbid.attr('class', 'col-xs-6 col-sm-6 bidamtback');
+                var name = $(document.createElement('h4')).html(value.item_name)
+                var key = $(document.createElement('h4')).html('Lot No.'+value.item_key)
+                var nimg = $(document.createElement('p')).html(nimages)
+                var floor = $(document.createElement('h5')).html('Floor Amt '+value.currency_type)
+                var bid = $(document.createElement('h5')).html('Bid Amt '+value.currency_type)
+                var flooramt = $(document.createElement('h4')).html(value.floor_amount)
+                var bidamt = $(document.createElement('h4')).html(value.bid_amount)
+                var divlimitfilter = $(document.createElement('div'))
+                divlimitfilter.attr('id', 'limitfilters')
+                divlimitfilter.attr('class', 'col-sm-12 col-xs-12')
+                filterdata = value.filters;                
+                var img = $('<img>');
+                img.attr('src', imgsrc);
+                $('#productinfo').append(divcolsixi.append(divcoli.append(img)).append(divcolsix.append(name).append(key).append(divlimitfilter))).append(divrow.append(divfloor.append(floor).append(flooramt)).append(divbid.append(bid).append(bidamt)))
+
+                $('#description').append(desc)
+                load_limitfilters(filterdata);
+				if(value.fav == 0){
+                    $("#star").css("color", "gray");
+                } else {
+                    $("#star").css("color", "rgb(249, 255, 0)");
+                }
+            })
+            display_imagesdata();
+            display_filterdata();
+            execute_additional(product_id);
+            document.getElementById('bid').style.display = 'block';
+            $.getScript("js/owl.carousel.js", function(data, textStatus, jqxhr){
+                if (initime == 0) {
+                    initime = 1;
+                } else {
+                    $('#owl-demo').data('owlCarousel').destroy();
+                }
+                $("#owl-demo").owlCarousel({
+                    navigation : true,
+                    slideSpeed : 300,
+                    paginationSpeed : 400,
+                    singleItem:true
+                });
+
+                $(".next").click(function(){
+                    owl.trigger('owl.next');
+                })
+                $(".prev").click(function(){
+                    owl.trigger('owl.prev');
+                })
+            });
+        }
+
+        function load_limitfilters(filterdata){
+            var countfilter = 0;
+            $.each(filterdata, function(index, value){
+                if (countfilter < 3){
+                    var filterstr = value.filter_name+' : '+value.filter_value;
+                    var filter = $(document.createElement('p')).html(filterstr);
+                    $('#limitfilters').append(filter);
+                }
+                countfilter = countfilter + 1;
+            })
+        }
+
+        function execute_additional(product_id){
+            var user_id = document.getElementById('user_id').value;
+            var product_id = product_id;
+            create_uirel(user_id, product_id);
+            chk_bid();
+        }
+
+/*      function downlaod_pic(download_link){
+            //location.assign('http://pearlroyale.com/pearlroyale_admin/assets/force_download.php?file_path='+download_link);
+            //window.location="http://pearlroyale.com/pearlroyale_admin/index.php/api/download_file";
+            //$.ajax({
+            //  data: {
+            //      file_path : download_link
+            //      },
+            //  type: 'post',
+            //  url: 'http://pearlroyale.com/pearlroyale_admin/assets/force_download.php',
+            //  success: function(response){
+            //      alert(response);
+            //  }
+            //});
+            window.open('http://pearlroyale.com/pearlroyale_admin/index.php/api/download_file', '_system', 'location=yes');
+        }*/
+
+    function display_imagesdata(){
+        $('.slider-for-images').empty();
+        $.each(slideimages, function(index, value){
+            var imgurl = 'http://pearlroyale.com/pearlroyale_admin/assets/uploads/'.concat(value.url);
+            var img = $('<img>');
+            img.attr('src', imgurl);
+            img.attr('class', 'img-responsive');
+            var anchor = $(document.createElement('a')).html('Click to View Image')
+            anchor.attr('id',value.id);
+            anchor.attr('onclick','loadimageview(this.id);');
+            anchor.attr('class', 'item link');
+            $('.slider-for-images').append(anchor.append(img));
+            $("#loader").fadeOut(1000);
+        });
+    }
+
+    function display_imagedata(){
+        $.each(slideimages, function(index, value){
+            var imgurl = 'http://pearlroyale.com/pearlroyale_admin/assets/uploads/'.concat(value.url);
+            var anchor = $(document.createElement('a')).html('Click to View Image')
+            anchor.attr('id',value.id);
+            anchor.attr('onclick','loadimageview(this.id);');
+            anchor.attr('style','text-decoration: none; font-size: 1.5em; display: block; color: #000 !important');
+            var img = $('<img>');
+            img.attr('src', imgurl);
+            var slideli = $(document.createElement('li'));
+            slideli.attr('id', '17');
+            slideli.attr('class', 'slide my_popup_open');
+            slideli.attr('tabindex', '1');
+            var slideinner = $(document.createElement('span'));
+            slideinner.attr('class', 'slide-inner');
+            var slideouter = $(document.createElement('span'));
+            slideouter.attr('class', 'slide-outer');
+            var slidegfx = $(document.createElement('span'));
+            slidegfx.attr('class', 'slide-gfx');
+            var anch = $(document.createElement('a'));
+            anch.attr('href',imgurl);
+            anch.attr('class', 'sliderclass');
+            anch.attr('height', '150px');
+            anch.attr('width' , '300px');
+            $('#slideshow').append(slideli.append(anchor).append(slideouter.append(slideinner.append(slidegfx.append(img)))));
+            $("#loader").fadeOut(1000);
+        })
+    }
+
+    function loadimageview(id){
+        document.getElementById('bid').style.display = 'none';
+        document.getElementById('imageview').style.display = 'block';
+        loadimageviewdata(id);
+    }
+
+    function display_filterdata(){
+        var additionaldiv = $(document.createElement('div'))
+        additionaldiv.attr('style', 'height: 100px')
+
+        $.each(filterdata, function(index, value){
+            var filterstr = value.filter_name+' : '+value.filter_value;
+            var filter = $(document.createElement('p')).html(filterstr);
+            filter.attr('style', 'text-align: left !important');
+            $('#filters').append(filter);
+        })
+        $('#filters').append(additionaldiv);
+    }
+
+/*    function downloadFile(address){
+        var Folder_Name = 'downloadFile';
+        var File_Name = document.getElementById('prod_id').value
+        URL = address.src;
+        if (URL == null && Folder_Name == null && File_Name == null) {
+            return;
+        }
+        else {
+            var networkState = navigator.connection.type;
+            if (networkState == Connection.NONE) {
+                alert('Network Error');
+                return;
+            } else {
+                alert('Downloading your images...');
+                download(URL, Folder_Name, File_Name);
+            }
+        }
+    }
+
+    function download(URL, Folder_Name, File_Name) {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
+
+        function fileSystemSuccess(fileSystem) {
+            var download_link = encodeURI(URL);
+            ext = download_link.substr(download_link.lastIndexOf('.') + 1);
+
+            var directoryEntry = fileSystem.root;
+            directoryEntry.getDirectory(Folder_Name, { create: true, exclusive: false }, onDirectorySuccess, onDirectoryFail);
+            var rootdir = fileSystem.root;
+            var fp = rootdir.toUrl();
+
+            fp = fp + "/" + Folder_Name + "/" + File_Name + "." + ext;
+            alert();
+            filetransfer(download_link, fp);
+        }
+
+        function onDirectorySuccess(parent) {
+            alert("Directory created Successfully");
+        }
+
+        function onDirectoryFail(error) {
+            alert("Unable to create new directory: " + error.code);
+        }
+
+          function fileSystemFail(evt) {
+            alert(evt.target.error.code);
+         }
+    }
+
+    function filetransfer(download_link, fp) {
+        var fileTransfer = new FileTransfer();
+        fileTransfer.download(download_link, fp,
+            function (entry) {
+                alert("download complete: " + entry.fullPath);
+            },
+            function (error) {
+                alert("download error source " + error.source);
+            }
+        );
+    }
+*/
+/*            $('#filters').append(slideli.append(anchor).append(slideouter.append(slideinner.append(slidegfx.append(img)))));*/
+
+    function chk_bid(){
+        var user_id = document.getElementById('user_id').value;
+        var prod_id = document.getElementById('prod_id').value;        
+        $.ajax({
+            url:'http://pearlroyale.com/pearlroyale_admin/index.php/api/check_bid_status/',
+            type: 'post',
+            data: {
+                user_id : user_id,
+                product_id : prod_id
+            },
+            success: function(data){
+                data = data[0];
+                if (data.bid == 2) {
+                    $('#bidButton').css('background', 'rgba(255, 10, 0, 0.9)');
+                    $('#bidButton').css('disabled', 'true');
+                    $('#bidButton').css('border-color', 'rgba(255, 10, 0, 0.9)');
+                    $('#divbid').css('background', '#FF4040');
+                } else {
+                    $('#bidButton').css('background', 'rgba(0, 179, 0, 0.8)');
+                    $('#bidButton').css('disabled', 'false');
+                    $('#bidButton').css('border-color', 'rgba(0, 179, 0, 0.9)');
+                    $('#divbid').css('background', '#00b300');
+                }
+            }
+        })        
+    }
+    </script>

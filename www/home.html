@@ -1,0 +1,243 @@
+    <script type="text/javascript">
+        $(document).ready(function() {
+            chk_user_sign();
+            get_categories();
+        })
+
+        function chk_user_sign(){
+            $.ajax({
+                url:'http://pearlroyale.com/pearlroyale_admin/index.php/api/chk_user_signin/',
+                datatype: 'json',
+                crossDomain: true,
+                success: function(data){
+                    var data = data[0];
+                    if(data.id == 0){
+                        document.getElementById('login').style.display = 'block';
+                        document.getElementById('home').style.display = 'none';
+                        document.getElementById('register').style.display = 'none';
+                        document.getElementById('myaccount').style.display = 'none';
+                        document.getElementById('auction').style.display = 'none';
+                        document.getElementById('prodlist').style.display = 'none';
+                        document.getElementById('bid').style.display = 'none';
+                        document.getElementById('imageview').style.display = 'none';
+                        document.getElementById('makebid').style.display = 'none';
+                        document.getElementById('mybid').style.display = 'none';
+                        document.getElementById('recentlyviewed').style.display = 'none';
+                        document.getElementById('myfavourites').style.display = 'none';
+                        document.getElementById('about').style.display = 'none';
+                        document.getElementById('notifications').style.display = 'none';
+                    } else {
+                        get_user(data.id);
+                        document.getElementById('user_id').value = data.id;
+                        get_bidded_prod(data.id);
+                        get_notification();
+                        document.getElementById('home').style.display = 'block';
+                        document.getElementById('login').style.display = 'none';
+                        document.getElementById('register').style.display = 'none';
+                        document.getElementById('myaccount').style.display = 'none';
+                        document.getElementById('auction').style.display = 'none';
+                        document.getElementById('prodlist').style.display = 'none';
+                        document.getElementById('bid').style.display = 'none';
+                        document.getElementById('imageview').style.display = 'none';
+                        document.getElementById('makebid').style.display = 'none';
+                        document.getElementById('mybid').style.display = 'none';
+                        document.getElementById('recentlyviewed').style.display = 'none';
+                        document.getElementById('myfavourites').style.display = 'none';
+                        document.getElementById('about').style.display = 'none';
+                        document.getElementById('notifications').style.display = 'none';
+
+                    }
+                }
+            })
+        }
+
+        function get_categories() {
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_categories',
+                datatype: 'json',
+                success: function(data) {
+                    display_categories(data)
+                }
+            })
+        }
+
+        function display_categories(data) {
+
+            $.each(data, function(index, value) {
+                var imgsrc = 'http://pearlroyale.com/pearlroyale_admin/assets/uploads/'.concat(value.image);
+                var item = $(document.createElement('div'));
+                item.attr('class', 'col-xs-4 col-sm-4 cellcss category')
+                item.attr('id', value.id)
+                item.attr('onClick', 'showAuctions(this.id);')
+                var img = $('<img>');
+                img.attr('src', imgsrc);
+                var content = $(document.createElement('p')).html(value.category_name)
+                $('#categories').append(item.append(img).append(content));
+            })
+        }
+
+        function show_myaccount(){
+           document.getElementById('home').style.display = 'none';
+           document.getElementById('myaccount').style.display = 'block';
+        }
+
+        function showAuctions(id) {
+           document.getElementById('category_id').value = id;
+           category_id = id;
+           document.getElementById('home').style.display = 'none';
+           document.getElementById('auction').style.display = 'block';
+
+            get_auctionslist(id);
+        }
+
+        function get_bid_products(){
+            var user_id = document.getElementById('user_id').value;
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('mybid').style.display = 'block';
+            get_bid_list(user_id);
+        }
+
+        function show_about(){
+           document.getElementById('home').style.display = 'none';
+           document.getElementById('about').style.display = 'block';            
+        }
+
+        function get_viewed_products(){
+            var user_id = document.getElementById('user_id').value;
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('recentlyviewed').style.display = 'block';
+            get_prod_viewed(user_id);
+        }
+        function get_notification_products(){
+            var user_id = document.getElementById('user_id').value;
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('notifications').style.display = 'block';
+            get_notification_product(user_id);
+            $('#notifyid').empty();
+        }
+
+        function get_favourite(){
+            var user_id = document.getElementById('user_id').value;
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('myfavourites').style.display = 'block';
+            get_favourite_prod(user_id);
+        }
+
+        setInterval(function(){
+            var user = document.getElementById('user_id').value;
+            get_bidded_prod(id);
+        }, 20000);
+
+
+        function get_bidded_prod(id){
+            $('#pructbidded').empty();
+            var user_id = document.getElementById('user_id').value
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_bid_list/',
+                type: 'post',
+                data: {
+                    user_id : user_id,
+                },
+                success: function(data) {
+                    display_bidded_prod(data);
+                }
+            })
+        }
+
+        function showiteminfo(id){
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('makebid').style.display = 'block';
+            get_prodbiddata(id);
+            document.getElementById('prod_id').value = id;
+        }
+
+        function display_bidded_prod(data){
+            $.each(data.productdata, function(index, value){
+                if(value.bid == 1){
+                    var anchor = $(document.createElement('a'));
+                    anchor.attr('id', value.id)
+                    anchor.attr('onClick', 'showiteminfo(this.id);')
+                    anchor.attr('style', 'text-decoration: none')
+                    var containr = $(document.createElement('div'))
+                    containr.attr('style', 'background: #00b300; padding: 4% 0 !important')
+                    var productname = $(document.createElement('h5')).html(value.item_id)
+                    productname.attr('class', 'pad0')
+                    var productamount = $(document.createElement('p')).html(value.bid_amount)
+                    productamount.attr('class', 'pad0')
+                    var brk = $(document.createElement('hr'))
+                    brk.attr('style', 'margin-top: 0px; margin-bottom: 0px')
+                    $('#pructbidded').append(anchor.append(containr.append(productname).append(productamount).append(brk)))
+                } else {
+                    var anchor = $(document.createElement('a'));
+                    anchor.attr('id', value.id)
+                    anchor.attr('onClick', 'showiteminfo(this.id);')
+                    anchor.attr('style', 'text-decoration: none')
+                    var containr = $(document.createElement('div'))
+                    containr.attr('style', 'background: #FF4040; padding: 4% 0 !important')
+                    var productname = $(document.createElement('p')).html(value.item_id)
+                    productname.attr('class', 'pad0')
+                    var productamount = $(document.createElement('p')).html(value.bid_amount)
+                    productamount.attr('class', 'pad0')
+                    var brk = $(document.createElement('hr'))
+                    brk.attr('style', 'margin-top: 0px; margin-bottom: 0px')
+                    $('#pructbidded').append(anchor.append(containr.append(productname).append(productamount).append(brk)))
+                }
+            })
+        }
+
+        function get_notification(){
+            var user_id = document.getElementById('user_id').value
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_notification_count',
+                type: 'post',
+                data: {
+                    user_id : user_id
+                },
+                success: function(data) {
+                    data = data[0];
+                    if (data.notify > 0){
+                        var span = $(document.createElement('span')).html(data.notify)
+                        span.attr('class' , 'badge')
+                        $('#notifyid').append(span);
+                    }
+                }
+            })
+        }
+
+    </script>
+    <section class="page" style="background: #d8d8d8 !important">
+        <div class="navmenu navmenu-default navmenu-fixed-left offcanvas-sm nav navmenu-nav navigation">
+            <div class="col-xs-12 col-sm-12 padnav"><label id="notification" onclick="get_notification_products();"><p id="notifyid"></p>Notification</label></div>
+            <div class="col-xs-12 col-sm-12 padnav"><label onclick="get_favourite();">My Favourite</label></div>
+            <div class="col-xs-12 col-sm-12 padnav"><label onclick="get_bid_products();">My Bid</label></div>
+            <div class="col-xs-12 col-sm-12 padnav"><label onclick="get_viewed_products();">Recent Viewed</label></div>
+            <div class="col-xs-12 col-sm-12 padnav"><label onclick="show_about();">About Pearl Royale</label></div>
+            <div class="col-xs-12 col-sm-12 padnav"><label onclick="show_myaccount();">My Account</label></div>
+        </div>
+        <div class="row istylehead">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                <div class="col-sm-2 col-xs-2">
+                    <i class="fa fa-bars navbar-toggle btnsys" data-toggle="offcanvas" data-target=".navmenu"></i>
+                </div>
+                <div class="col-sm-6 col-xs-6 imgsys" text-center style="">
+                    <a href="home.html" class="imgsys"><img src="images/Logo.png"></a>
+                </div>
+                <div class="col-sm-4 col-xs-4 iconscls pad0">
+                    <a> <i onclick="get_favourite();" class="fa fa-star"></i>
+                    </a>
+                    <a> <i onclick="get_bid_products();" class="fa fa-heart"></i>
+                    </a>
+                    <a> <i onclick="get_viewed_products();" class="fa fa-pencil"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="background: #d8d8d8 !important">
+            <div class="row gridsec">
+                    <div id="categories" class="pad0 container-fluid text-center spancls istylecat">
+                    </div>
+            </div>
+            <div id="pructbidded" class="pructbidded"></div>
+            <input type="hidden" name="category_id" id="category_id">
+        </div>
+    </section>  

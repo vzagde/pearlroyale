@@ -1,0 +1,362 @@
+    <section class="page" id="loader" style="z-index: 999; background: #fff">
+        <img src="img/loading.gif" alt="" class="loaderimg img-responsive">
+    </section>
+    <section class="page" id="listloader" style="background: #EEEEE0">
+        <div class="row istyleback">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                <label class="col-sm-2 col-xs-2" onclick="go_backfrom_prolist();"><i class="fa fa-angle-left"></i></label>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a><img src="images/PRLogo.png">
+                    </a>
+                </div>
+                <div class="col-sm-6 col-xs-6 headtitle">
+                    <a class="navbar-brand">Product List</a>
+                </div>
+            </div>
+        </div>
+        
+    <div class="row padtop">
+        <div class="col-md-6 col-sm-6 col-xs-6">
+        <button id="prodbtn" type="button" class="prodbtn prodbtn-info" data-toggle="" data-target="#filter" aria-expanded="false" aria-controls="filter">Filter</button>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+        <button id="sortbtn" type="button" class="prodbtn prodbtn-info" data-toggle="" data-target="#sort" aria-expanded="false" aria-controls="sortbtn">Sort</button>
+        </div>
+    </div>
+    <div class="container" style="background: #d8d8d8; border: 2px solid #d8d8d8;">
+    <div id="filter" class="collapse">
+    </div>
+    <div id="sort" class="collapse">
+      <h4>Sort</h4>
+        <div class="radio">
+          <label class="ddopt"><input type="radio" name="optradio" id="lowestbid" value="lowestbid">Lowest Bid Prize</label>
+        </div>
+        <div class="radio">
+          <label class="ddopt"><input type="radio" name="optradio" id="highestbid" value="highestbid">Highest Bid Prize</label>
+        </div>
+        <div class="radio">
+          <label class="ddopt"><input type="radio" name="optradio" id="lowestfloor" value="lowestfloor">Lowest Floor Prize</label>
+        </div>
+        <div class="radio">
+          <label class="ddopt"><input type="radio" name="optradio" id="highestfloor" value="highestfloor">Highest Floor Prize</label>
+        </div>
+        <div>
+          <label onclick="sortproduct();"><button id="btnsort" class="btn btn-primary" data-toggle="collapse" data-target="#sort">Sort</button></label>
+        </div>
+    </div>
+    </div>        
+        <div id="productlis">
+        </div>
+    </section>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#prodbtn").click(function(){
+            filterview();
+            $("#filter").toggleClass("in");
+            $("#sort").removeClass("in");
+        })
+
+        $("#sortbtn").click(function(){
+            $("#sort").toggleClass("in");
+            $("#sort").css("height", "300px");
+            $("#filter").removeClass("in");
+        })
+    })
+
+    var productdata;
+    function go_backfrom_prolist(){
+        $('#productlis').empty();
+        $('#filter').empty();
+        document.getElementById('prodlist').style.display = 'none';
+        document.getElementById('auction').style.display = 'block';
+        $("#filter, #sort").removeClass("in");
+    }
+
+
+    function get_prod_listdata(auction_id, category_id) {
+        $("#loader").show();
+        document.getElementById('cat_id').value = category_id;
+        document.getElementById('auc_id').value = auction_id;
+        $.ajax({
+            url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_product_list/',
+            type: 'post',
+            data: {
+                category_id: category_id,
+                auction_id: auction_id
+            },
+            success: function(data) {
+                display_prod_listdata(data);
+            }
+        })
+    }
+
+    function display_prod_listdata(data) {
+        $("#loader").fadeIn();
+        var variable = 1;
+        productdata = data;
+        $.each(data.productdata, function(index, value) {
+            var anchor = $(document.createElement('a'));
+            anchor.attr('id', value.id)
+            anchor.attr('onClick', 'showProductinfo(this.id);')
+            anchor.attr('style', 'text-decoration: none')
+            var nimages = 'No. of Images: '.concat(value.no_of_images);
+            var imgsrc = 'http://pearlroyale.com/pearlroyale_admin/assets/uploads/'.concat(value.image);
+            var divcoli = $(document.createElement('div'))
+            divcoli.attr('class', 'col-xs-6 col-sm-6 listimg');
+            var divcolsixi = $(document.createElement('div'))
+            divcolsixi.attr('class', 'row listing-vz');
+            divcolsixi.attr('style', 'background: #BEBEBE');
+            var divcolsix = $(document.createElement('div'))
+            divcolsix.attr('class', 'col-xs-6 col-sm-6 pad0');
+            var divrow = $(document.createElement('div'))
+            divrow.attr('class', 'row prize-vz');
+            divrow.attr('style','padding-bottom: 10px');
+            var divfloor = $(document.createElement('div'))
+            divfloor.attr('class', 'col-xs-6 col-sm-6 flooramtback');
+            var divbid = $(document.createElement('div'))
+            divbid.attr('class', 'col-xs-6 col-sm-6 bidamtback');
+            var name = $(document.createElement('h4')).html(value.item_name)
+            var key = $(document.createElement('h4')).html('Lot No.'+value.item_key)
+            var nimg = $(document.createElement('p')).html(nimages)
+            var floor = $(document.createElement('h5')).html('Floor Amt '+value.currency_type)
+            var bid = $(document.createElement('h5')).html('Bid Amt '+value.currency_type)
+            var flooramt = $(document.createElement('h4')).html(value.floor_amount)
+            var bidamt = $(document.createElement('h4')).html(value.bid_amount)
+            var img = $('<img>');
+            img.attr('src', imgsrc);
+            var divlimitfilter = $(document.createElement('div'))
+            var limitedfilters = 'limitedfilters'+variable;
+            divlimitfilter.attr('id', limitedfilters)
+            divlimitfilter.attr('class', 'col-sm-12 col-xs-12 pad0')
+            filterdata = value.filters;
+            var space = $(document.createElement('div'))
+            space.attr('style', 'border: 4px solid #D8CE86')
+            $('#productlis').append(anchor.append(divcolsixi.append(divcoli.append(img)).append(divcolsix.append(name).append(key).append(divlimitfilter))).append(divrow.append(divfloor.append(floor).append(flooramt)).append(divbid.append(bid).append(bidamt))))
+            load_filters(filterdata, limitedfilters);
+            variable = variable + 1;
+        })
+        filterview();
+        $("#loader").fadeOut(3000);
+    }
+
+    function load_filters(filterdata, limitedfilters){
+        var id = '#'+limitedfilters;
+        $(id).empty();
+        var countfilter = 0;
+        $.each(filterdata, function(index, value){
+            if (countfilter < 2){
+                if (value.filter_name != undefined){
+                    var filterstr = value.filter_name+' : '+value.filter_value;
+                    var filter = $(document.createElement('p')).html(filterstr);
+                    $(id).append(filter);                        
+                }
+            }
+            countfilter = countfilter + 1;
+        })
+    }
+
+    function showProductinfo(id){
+        document.getElementById('prodlist').style.display = 'none';
+        get_product_data(id);
+    }
+
+    function sortproduct(){
+        if(document.getElementById('lowestbid').checked){
+            displaysortdata(productdata.lowestbidamountdata);
+        }
+
+        if(document.getElementById('highestbid').checked){
+            displaysortdata(productdata.highestbidamountdata);
+        }
+
+        if(document.getElementById('lowestfloor').checked){
+            displaysortdata(productdata.lowestflooramountdata);
+        }
+
+        if(document.getElementById('highestfloor').checked){
+            displaysortdata(productdata.highestflooramountdata);
+        }
+    }
+
+    function displaysortdata(data){
+        $("#loader").fadeIn(1000);
+        $("#listloader").hide();
+        $('#productlis').empty();
+        $('#filter').empty();
+        var data = data[0];
+        $.each(data.filetered, function(index, value){
+            if(value.id == 0){
+                var errtxt = $(document.createElement('p')).html('Products are not available for this filter');
+                $('#productlis').append(errtxt);                
+            } else {
+                var anchor = $(document.createElement('a'));
+                anchor.attr('id', value.id)
+                anchor.attr('onClick', 'showProductinfo(this.id);')
+                anchor.attr('style', 'text-decoration: none')
+                var nimages = 'No. of Images: '.concat(value.no_of_images);
+                var imgsrc = 'http://pearlroyale.com/pearlroyale_admin/assets/uploads/'.concat(value.image);
+                var divcoli = $(document.createElement('div'))
+                divcoli.attr('class', 'col-xs-6 col-sm-6 listimg');
+                var divcolsixi = $(document.createElement('div'))
+                divcolsixi.attr('class', 'row');
+                var divcolsix = $(document.createElement('div'))
+                divcolsix.attr('class', 'col-xs-6 col-sm-6 pad0');
+                var divrow = $(document.createElement('div'))
+                divrow.attr('class', 'row');
+                var divfloor = $(document.createElement('div'))
+                divfloor.attr('class', 'col-xs-6 col-sm-6 flooramtback');
+                var divbid = $(document.createElement('div'))
+                divbid.attr('class', 'col-xs-6 col-sm-6 bidamtback');
+                var name = $(document.createElement('h4')).html(value.item_name)
+                var key = $(document.createElement('h4')).html('Lot No.'+value.item_key)
+                var nimg = $(document.createElement('p')).html(nimages)
+                var floor = $(document.createElement('h5')).html('Floor Amt '+value.currency_type)
+                var bid = $(document.createElement('h5')).html('Bid Amt '+value.currency_type)
+                var flooramt = $(document.createElement('h4')).html(value.floor_amount)
+                var bidamt = $(document.createElement('h4')).html(value.bid_amount)
+                var img = $('<img>');
+                img.attr('src', imgsrc);
+                var space = $(document.createElement('div'))
+                space.attr('style', 'border: 4px solid #EEEEE0')
+                $('#productlis').append(anchor.append(divcolsixi.append(divcoli.append(img)).append(divcolsix.append(name).append(key))).append(divrow.append(divfloor.append(floor).append(flooramt)).append(divbid.append(bid).append(bidamt)))).append(space)
+            }
+        })
+        $("#listloader").fadeIn();
+        $("#loader, .loaderimg").fadeOut(5000);
+    }
+
+    function filterview(){
+        document.getElementById('cat_id').value = category_id;
+        $.ajax({
+            url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_filterslist/',
+            type: 'post',
+            data: {
+                id: category_id,
+            },
+            success: function(data) {
+                load_filterview(data);
+            }
+        })
+    }
+
+    function load_filterview(data){
+        var addid = 1;
+        $('#filter').empty();
+        $.each(data, function(index, value){
+            if(value.filter_type == 'Numeric'){
+                var divmain = $(document.createElement('div'))
+                divmain.attr('class', 'col-xs-12 col-sm-12')
+                divmain.attr('style', 'padding: 2% 0 !important;')
+                var lbl = $(document.createElement('p')).html(value.filter_name)
+                lbl.attr('class', 'pad0')
+                var divlbl = $(document.createElement('div'))
+                divlbl.attr('class', 'col-xs-12 col-sm-12')
+                var divfilter1 = $(document.createElement('div'))
+                divfilter1.attr('class', 'col-xs-6 col-sm-6')
+                var filter1 = $(document.createElement('input'))
+                filter1.attr('type', 'text')
+                var id = 'filter'+addid;
+                filter1.attr('id', id)
+                filter1.attr('name', 'numeric')
+                var divfilter2 = $(document.createElement('div'))
+                divfilter2.attr('class', 'col-xs-6 col-sm-6')
+                var filter2 = $(document.createElement('input'))
+                filter2.attr('type', 'text')
+                var id = 'filter'+addid;
+                filter2.attr('id', id)
+                filter2.attr('name', 'numeric')
+                $('#filter').append(divlbl.append(lbl)).append(divmain.append(divfilter1.append(filter1)).append(divfilter2.append(filter2)));
+                addid = addid + 1;
+            }
+            if(value.filter_type == 'Alphanumeric'){
+                var divmain = $(document.createElement('div'))
+                divmain.attr('class', 'row')
+                divmain.attr('style', 'padding: 2% 0 !important;')
+                var lbl = $(document.createElement('p')).html(value.filter_name)
+                lbl.attr('class', 'pad0')
+                var divlbl = $(document.createElement('div'))
+                divlbl.attr('class', 'col-xs-12 col-sm-12')
+                var str = value.filter_value;
+                var arr = str.split(",");
+                var dropdown = $("<select></select>");
+                dropdown.attr('id', value.id)
+                dropdown.attr('class',"btn btn-default dropdown-toggle ddcustom")
+                dropdown.attr('type',"button")
+                dropdown.attr('data-toggle',"dropdown")
+                dropdown.attr('onchange', 'load_filterproduct(this.id);')
+                $.each(arr, function (index, value) {
+                    var val = '<option value='+value+' >'
+                    dropdown.append( val + value + "</option>");
+                });
+
+                $('#filter').append(divmain.append(divlbl.append(lbl)).append(divlbl.append(dropdown)));
+                addid = addid + 1;
+            }
+
+            if(value.filter_type == 'Dropdown'){
+                var divmain = $(document.createElement('div'))
+                divmain.attr('class', 'row')
+                divmain.attr('style', 'padding: 2% 0 !important;')
+                var lbl = $(document.createElement('p')).html(value.filter_name)
+                lbl.attr('class', 'pad0')
+                var divlbl = $(document.createElement('div'))
+                divlbl.attr('class', 'col-xs-12 col-sm-12')
+                var str = value.filter_value;
+                var arr = str.split(",");
+                var dropdown = $("<select></select>");
+                dropdown.attr('id', value.id)
+                dropdown.attr('class',"btn btn-default dropdown-toggle ddcustom")
+                dropdown.attr('type',"button")
+                dropdown.attr('data-toggle',"dropdown")
+                dropdown.attr('onchange', 'load_filterproduct(this.id);');
+                $.each(arr, function (index, v) {
+                    var val = "<option value='"+v+"' >"
+                    dropdown.append( val + v + "</option>");
+                });
+                $('#filter').append(divmain.append(divlbl.append(lbl)).append(divlbl.append(dropdown)));
+                addid = addid + 1;
+            }
+        })
+
+        var div = $(document.createElement('div'))
+        div.attr('class', 'col-sm-12 col-xs-12')
+        div.attr('style', 'padding: 2% 0;')
+        var label = $(document.createElement('label'))
+        label.attr('onclick', 'filterproduct();')
+        var button = $(document.createElement('button')).html('Filter Products')
+        button.attr('id', 'btnfilter')
+        button.attr('class', 'btn btn-primary')
+        button.attr('data-toggle', 'collapse')
+        button.attr('data-target', '#filter')
+        $('#filter').append(div.append(label.append(button)))
+    }
+
+    function load_filterproduct(filtername, filtervalue){
+        $("#loader").show();
+        $("#listloader").hide();
+        var id = '#'+filtername;
+        var filtervalue = $(id).val();
+        var cat_id = $('#category_id').val();
+        var auction = $('#auc_id').val();
+        $.ajax({
+            url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_filtered_items/',
+            type: 'post',
+            data: {
+                category_id : cat_id,
+                auction_id : auction,
+                filter_id : filtername,
+                filter_value : filtervalue
+            },
+            success: function(data) {
+                $('#productlis').empty();
+                $('#filter').empty();
+                display_prod_listdata_filter(data);
+                $("#filter").removeClass("in");
+            }
+        })
+        $("#listloader").show();
+        $("#loader").hide();
+    }
+
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

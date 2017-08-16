@@ -1,0 +1,145 @@
+    <section class="page">
+        <div class="col-sm-12 col-xs-12 istyleback">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                <label class="col-sm-2 col-xs-2" onclick="go_backfrom_myacoount();"><i class="fa fa-angle-left"></i></label>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a href="#home"><img src="images/PRLogo.png"></a>
+                </div>
+                <div class="col-sm-4 col-xs-4 headtitle">
+                    <a class="navbar-brand padside0">My Account</a>
+                </div>
+                <div class="col-sm-4 col-xs-4">    
+                <button onclick="logout_user();" class="btn btn-warning btn-block headbut" type="submit">Logout</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="account-wall gridsec">
+                <div id="users" class="control-group regform">
+                <div class="testid"></div>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+    function go_backfrom_myacoount(){
+          document.getElementById('myaccount').style.display = 'none';
+          document.getElementById('home').style.display = 'block';
+    }
+
+        function get_user(user_id){
+            $.ajax({
+                url:'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_users_info/',
+                type: 'post',
+                data: {
+                    user_id: user_id
+                },
+                success: function(data){
+                    display_user_data(data)
+                }
+            })
+        }
+
+        function display_user_data(data){
+            $.each(data, function(index, value) {
+                console.log(value);
+                // $(".testid").text(value.account_info);
+                var pname = $(document.createElement('p')).html('Name');
+                var name = $(document.createElement('h3')).html(value.first_name.concat(' ').concat(value.last_name));
+                pname.attr('class', 'pad0')
+                name.attr('class', 'form-control')
+                name.attr('disabled', 'true')
+                var pusername = $(document.createElement('p')).html('Username');
+                var username = $(document.createElement('h3')).html(value.username)
+                pusername.attr('class', 'pad0')
+                username.attr('class', 'form-control')
+                username.attr('disabled', 'true')
+                var pcontact = $(document.createElement('p')).html('Contact');
+                var contact = $(document.createElement('h3')).html(value.phone)
+                pcontact.attr('class', 'pad0')
+                contact.attr('class', 'form-control')
+                contact.attr('disabled', 'true')
+                var pcity = $(document.createElement('p')).html('City');
+                var city = $(document.createElement('h3')).html(value.city)
+                pcity.attr('class', 'pad0')
+                city.attr('class', 'form-control')
+                city.attr('disabled', 'true')
+                var pcountry = $(document.createElement('p')).html('Country');
+                var country = $(document.createElement('h3')).html(value.country)
+                pcountry.attr('class', 'pad0')
+                country.attr('class', 'form-control')
+                country.attr('disabled', 'true')
+                // var useramountxt = $(document.createElement('p')).html('Amount In Account (USD)');
+                // var useramount = $(document.createElement('h3')).html(value.amount)
+                // useramountxt.attr('class', 'pad0')
+                // useramount.attr('class', 'form-control')
+                // useramount.attr('disabled', 'true')
+                // var userexpamountxt = $(document.createElement('p')).html('Bidded Amount Till Now (USD)');
+                // var userexpamoun = $(document.createElement('h3')).html(value.expence)
+                // userexpamountxt.attr('class', 'pad0')
+                // userexpamoun.attr('class', 'form-control')
+                // userexpamoun.attr('disabled', 'true')
+                // var useramounremtxt = $(document.createElement('p')).html('Starting Account Balance (USD)');
+                // var useramounrem = $(document.createElement('h3')).html(value.total)
+                // useramounremtxt.attr('class', 'pad0')
+                // useramounrem.attr('class', 'form-control')
+                // useramounrem.attr('disabled', 'true')
+                var hrline = $(document.createElement('hr'));
+                hrline.attr('style', 'border-color: #000');
+                if (value.usd_text != '') {
+                    var usd_text = $(document.createElement('p')).html(value.usd_text);
+                }
+                $('#users').append(pname).append(name).append(pusername).append(username).append(pcontact).append(contact).append(pcity).append(city).append(pcountry).append(country).append(hrline);
+                $.each(value.account_info, function(index, val){
+                    var hrline1 = $(document.createElement('hr'));
+                    hrline1.attr('style', 'border-color: #000');
+                    var useramountxt = $(document.createElement('p')).html('Amount In Account ('+val.currency_type+')');
+                    var useramount = $(document.createElement('h3')).html(val.account_balance)
+                    useramountxt.attr('class', 'pad0')
+                    useramount.attr('class', 'form-control')
+                    useramount.attr('disabled', 'true')
+                    var userexpamountxt = $(document.createElement('p')).html('Bidded Amount Till Now ('+val.currency_type+')');
+                    var userexpamoun = $(document.createElement('h3')).html(val.account_expense)
+                    userexpamountxt.attr('class', 'pad0')
+                    userexpamoun.attr('class', 'form-control')
+                    userexpamoun.attr('disabled', 'true')
+                    var useramounremtxt = $(document.createElement('p')).html('Starting Account Balance ('+val.currency_type+')');
+                    var useramounrem = $(document.createElement('h3')).html(val.initial_account)
+                    useramounremtxt.attr('class', 'pad0')
+                    useramounrem.attr('class', 'form-control')
+                    useramounrem.attr('disabled', 'true')
+                    // value.account_info.length[i][account_balance];
+                    // value.account_info.length[i][account_expense];
+                    // value.account_info.length[i][initial_account];
+                    console.log('append text amount');
+
+                    $('#users').append(useramountxt).append(useramount).append(userexpamountxt).append(userexpamoun).append(useramounremtxt).append(useramounrem).append(hrline1);
+                })
+                // for (var i = 0; i >= value.account_info.length; i++) {
+                // }
+
+                $("#users").append(usd_text);
+                // $('#users').append(pname).append(name).append(pusername).append(username).append(pcontact).append(contact).append(pcity).append(city).append(pcountry).append(country).append(hrline).append(useramountxt).append(useramount).append(userexpamountxt).append(userexpamoun).append(useramounremtxt).append(useramounrem).append(hrline).append(usd_text);
+            })
+        }
+
+        //logout not working
+        function logout_user(){
+            $.ajax({
+                url:'http://pearlroyale.com/pearlroyale_admin/index.php/api/logout/',
+                type: 'post',
+                crossDomain: true,
+                success: function(data){
+                	console.log('user log status: '.concat(data));
+                }
+            })
+            document.getElementById('user_id').value = null
+            document.getElementById('prod_id').value = null
+            document.getElementById('cat_id').value = null
+            document.getElementById('auc_id').value = null
+            document.getElementById('bid_time').value = null
+            $('#users').empty();
+            $('#pructbidded').empty();
+            document.getElementById('myaccount').style.display = 'none';
+            document.getElementById('login').style.display = 'block';
+        }
+    </script>

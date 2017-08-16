@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+		<title>Image Zoom</title>
+		<script src="js/demo.js"></script>
+		<link href="css/jquery.fs.zoomer.css" rel="stylesheet" type="text/css" media="all">	
+	</head>
+	<body class="gridlock demo">
+		<article class="row page">
+			<div class="mobile-full tablet-full desktop-8 desktop-push-2">
+				<div class="zoomer_wrapper zoomer_basic">
+					<img src="images/Sponsers.png">
+				</div>
+			</div>
+		</article>
+
+		<script src="js/jquery.fs.zoomer.js"></script>
+		<script>
+			$(document).ready(function() {
+				$(".zoomer_basic").zoomer();
+
+				$(".zoomer_custom").zoomer({
+					controls: {
+						zoomIn: ".zoomer_custom_zoom_in",
+						zoomOut: ".zoomer_custom_zoom_out"
+					},
+					customClass: "dark_zoomer",
+					increment: 0.03,
+					interval: 0.1,
+					marginMax: 50
+				});
+
+				
+				$(window).on("resize", function(e) {
+					$(".zoomer_wrapper").zoomer("resize");
+				});
+			});
+		</script>
+
+	</body>
+</html>

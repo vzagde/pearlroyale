@@ -1,0 +1,233 @@
+    <section id="makebidslide" class="page" style="height: auto !important">
+        <div class="col-sm-12 col-xs-12 istyleback gridsecoth">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                <div class="col-sm-3 col-xs-3">
+                    <label onclick="go_backfrom_productbid();"><i class="fa fa-angle-left"></i></label>
+                </div>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a><img src="images/PRLogo.png">
+                    </a>
+                </div>
+                <div class="col-sm-5 col-xs-5 headtitle">
+                    <a class="navbar-brand">Bid</a>
+                </div>
+                <div class="col-sm-2 col-xs-2">
+                  </div>
+            </div>
+        </div>
+        <div id="productbid" class="">
+        </div>
+        <div class="row" style="background: #f1f1f1">
+            <div class="account-wall">
+                <div class="control-group regform">
+                    <input id="bidamount" type="tel" style="font-weight: bold; font-size: 20px" class="form-control" placeholder="Bid Amount" required>
+                        <p class="help-block" style=""></p>
+                    <button id="bid" onclick="check_bid();" class="btn btn-lg btn-success btn-block" type="submit">Confirm Bid</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+
+        function reload_makebid(){
+            var p_id = document.getElementById('prod_id').value
+            $('#productbid').empty();
+            get_prodbiddata(p_id);
+        }
+
+        function go_backfrom_productbid(){
+            $('#bidamtdiv').css('background-color', '#00b300');
+            $('#bidamount').removeAttr("disabled");
+            $('#productbid').empty();
+            $('#makebidslide').animate({ "top" : "0%" });
+            document.getElementById('makebid').style.display = 'none';
+            document.getElementById('bid').style.display = 'block';
+            $('#productinfo').empty();
+            $('#slideshow').empty();
+            $('#filters').empty();
+            get_product_data(document.getElementById('prod_id').value);
+        }
+
+        function get_prodbiddata(id) {
+        	var user_id = document.getElementById('user_id').value;
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_products_info/',
+                type: 'post',
+                data: {
+                    product_id: id,
+                    user_id : user_id
+                },
+                success: function(data) {
+                    display_bid_data(data);
+                    check_bid_status();
+                }
+            })
+            autoload_makebidfunction();
+        }
+
+        function autoload_makebidfunction(){
+            $('#bidamtdiv').css('background-color', '#00b300');
+            $('#bidamount').removeAttr("disabled");
+            $('#productbid').empty();            
+        }
+
+        setInterval(function(){
+        get_prodbid_refreshdata();
+        }, 5000);
+
+        function get_prodbid_refreshdata(){
+            id = document.getElementById('prod_id').value;
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_bid_amount/',
+                type: 'post',
+                data: {
+                    product_id: id
+                },
+                success: function(data) {
+                    display_refresh_makebid(data);
+                    check_bid_status();
+                }
+            })
+        }
+
+        function display_refresh_makebid(data){
+            $.each(data, function(index, value){
+                $('#bidamtdiv').empty();
+                var bidtxt = $(document.createElement('h5')).html('Bid Amt '+value.currency_type)
+                var bidamnt = $(document.createElement('h4')).html(value.bid_amount)
+                $('#bidamtdiv').append(bidtxt).append(bidamnt);
+            })
+        }
+
+        function check_bid_status(){
+            var user_id = document.getElementById('user_id').value;
+            var prod_id = document.getElementById('prod_id').value;
+            $.ajax({
+                url:'http://pearlroyale.com/pearlroyale_admin/index.php/api/check_bid_status/',
+                type: 'post',
+                data: {
+                    user_id : user_id,
+                    product_id : prod_id
+                },
+                success: function(data){
+                    data = data[0];
+                    if (data.bid == 2) {
+                        $('.bidamtback').css('background', '#FF4040');
+                        document.getElementById('bidamount').disabled = 'true';
+                    } else {
+                        $('.bidamtback').css('background', '#00b300');
+                        document.getElementById('bidamount').disabled = 'false'; 
+                        $("#bidamount").removeAttr("disabled");                       
+                    }
+                }            
+            })        
+        }
+
+        function display_bid_data(data) {
+            $.each(data, function(index, value) {
+                var nimages = 'No. of Images: '.concat(value.num_images);
+                var imgsrc = 'http://pearlroyale.com/pearlroyale_admin/assets/uploads/'.concat(value.image);
+                var divcoli = $(document.createElement('div'))
+                divcoli.attr('class', 'col-xs-6 col-sm-6 limg');
+                var divcolsixi = $(document.createElement('div'))
+                divcolsixi.attr('class', 'row');
+                var divcolsix = $(document.createElement('div'))
+                divcolsix.attr('class', 'col-xs-6 col-sm-6');
+                var divrow = $(document.createElement('div'))
+                divrow.attr('class', 'row');
+                var divfloor = $(document.createElement('div'))
+                divfloor.attr('class', 'col-xs-6 col-sm-6 flooramtback');
+                var divbid = $(document.createElement('div'))
+                divbid.attr('id', 'bidamtdiv');
+                divbid.attr('class', 'col-xs-6 col-sm-6 bidamtback');
+                var name = $(document.createElement('h4')).html(value.item_name)
+                var key = $(document.createElement('h4')).html('Lot No.'+value.item_key)
+                var nimg = $(document.createElement('p')).html(nimages)
+                var floor = $(document.createElement('h5')).html('Floor Amt '+value.currency_type)
+                var bid = $(document.createElement('h5')).html('Bid Amt '+value.currency_type)
+                var flooramt = $(document.createElement('h4')).html(value.floor_amount)
+                var bidamt = $(document.createElement('h4')).html(value.bid_amount)
+                var divlimitfilter = $(document.createElement('div'))
+                divlimitfilter.attr('id', 'makebidlimitfilters')
+                divlimitfilter.attr('class', 'col-sm-12 col-xs-12')
+                filterdata = value.filters;                
+                var img = $('<img>');
+                img.attr('src', imgsrc);
+                $('#productbid').append(divcolsixi.append(divcoli.append(img)).append(divcolsix.append(name).append(key).append(divlimitfilter))).append(divrow.append(divfloor.append(floor).append(flooramt)).append(divbid.append(bid).append(bidamt)))
+                load_makebidlimitfilters(filterdata);
+            })
+            check_bid_status();
+        }
+
+        function load_makebidlimitfilters(filterdata){
+            var countfilter = 0;
+            $.each(filterdata, function(index, value){
+                if (countfilter < 3){
+                    var filterstr = value.filter_name+' : '+value.filter_value;
+                    var filter = $(document.createElement('p')).html(filterstr);
+                    $('#makebidlimitfilters').append(filter);
+                }
+                countfilter = countfilter + 1;
+            })            
+        }
+
+        function check_bid(){
+            var bid_amount = document.getElementById('bidamount').value;
+            var user_id = document.getElementById('user_id').value;
+            var prod_id = document.getElementById('prod_id').value;
+            $.ajax({
+                url:'http://pearlroyale.com/pearlroyale_admin/index.php/api/ckh_valid_bidamount/',
+                type: 'post',
+                data: {
+                    bid_amount : bid_amount,
+                    product_id : prod_id,
+                    user_id : user_id
+                },
+                success: function(data){
+                    chkdata(data);
+                }
+            })
+        }
+
+        function chkdata(data){
+            $.each(data, function(index, value){
+                if (data.id == 0){
+                    alert("Bid can time has been exceeded");
+                } else {
+                    var test = parseInt(value.pre_bid) + parseInt(value.pre_bid/2);
+                    if (parseInt(value.curr_bid) < test && parseInt(value.curr_bid) > parseInt(value.pre_bid)){
+                        if(parseInt(value.curr_bid) < parseInt(value.amount)){
+                            bid_execute();
+                            $('#productbid').empty();
+                            get_prodbiddata(document.getElementById('prod_id').value);
+                            alert("You have Successfully bidded on this product");
+                        } else {
+                            alert("You don't have sufficient balance");
+                        }
+                    } else {
+                        alert("Please check the amount you entered");
+                    }
+                }
+            })
+		    $('#bidamount').val('');
+            $('#makebidslide').animate({ "top" : "0%" });
+        }
+
+        function bid_execute(){
+            var bid_amount = document.getElementById('bidamount').value;
+            var user_id = document.getElementById('user_id').value;
+            var product_id = document.getElementById('prod_id').value;
+            $.ajax({
+                url:'http://pearlroyale.com/pearlroyale_admin/index.php/api/bid_execute/',
+                type: 'post',
+                data: {
+                    bid_amount : bid_amount,
+                    product_id : product_id,
+                    user_id : user_id
+                },
+                success: function(data){
+                    chkdata(data);
+                }
+            })
+        }
+    </script>

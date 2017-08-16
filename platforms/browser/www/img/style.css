@@ -1,0 +1,423 @@
+
+        .img-zoom {
+            margin-left: 80px;
+            margin-top: 200px;
+            width: 200px !important;
+            -webkit-transition: all .2s ease-in-out;
+            -moz-transition: all .2s ease-in-out;
+            -o-transition: all .2s ease-in-out;
+            -ms-transition: all .2s ease-in-out;
+        }
+         
+        .transition {
+            -webkit-transform: scale(2); 
+            -moz-transform: scale(2);
+            -o-transform: scale(2);
+            transform: scale(2);
+        }
+
+/*image preview*/
+
+.productbidifodisp{
+    margin-top: 5%;
+}
+
+#notifyid{
+    color: red;
+}
+
+.starstyle{
+    margin-left: 58px !important;
+    color: rgb(249, 255, 0) !important;
+    font-size: 2.5em !important;   
+}
+
+  .marginset{
+    margin: 55% 0 0 0;
+    position: fixed;
+    z-index: 100;
+  }
+
+  .marginset button{
+    width: 100%;
+  }
+ 
+  .slidertop {
+    padding-top: 54px;
+  }
+
+        .img-zoom {
+            margin-left: 80px;
+            margin-top: 200px;
+            width: 200px !important;
+            -webkit-transition: all .2s ease-in-out;
+            -moz-transition: all .2s ease-in-out;
+            -o-transition: all .2s ease-in-out;
+            -ms-transition: all .2s ease-in-out;
+        }
+         
+        .transition {
+            -webkit-transform: scale(2); 
+            -moz-transform: scale(2);
+            -o-transform: scale(2);
+            transform: scale(2);
+        }
+        
+.catbg {
+    background: #f1f1f1;
+    border-bottom: 15px solid #fff;
+}
+.page {
+	width: 100%;
+	height: 100%;
+	top:0;
+	left: 0;
+	position: absolute;
+	overflow-x: hidden !important;
+}
+
+.padnav {
+    padding-top: 30px;
+    border-bottom: 2px #000 solid;
+}
+.prodbtn {
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.prodbtn-info {
+    color: #000;
+    background-color: #fff;
+}
+
+
+.padtop{
+    padding-top: 54px;
+    border-bottom: 2px #000 solid;
+}
+.padtop div{
+    padding: 0 0px;
+}
+.cust{
+    width: 100%;
+}
+.cust-1 h1,h2,h3,h4,h5,p {
+    text-align: center;
+}
+.cust-1 {
+    width: 48.6%;
+}
+
+.navigation{
+	z-index: 1000; 
+	margin-top: 10%; 
+	overflow-x: hidden !important;
+}
+
+.navigation a{
+	display: block;
+	padding: 10px 10px;
+	font-size: 1.2em;
+    border-bottom: 1px solid #000;
+    text-decoration: none !important;
+    color: #000;
+
+}
+
+.prodimg {
+    margin-left: -15px;
+    width: 120%;
+    /*height: 50%;*/
+}
+
+.listimg img {
+    width: 102.5%;
+}
+
+.listimg {
+    padding: 3px !important;
+}    
+
+.limg img {
+    width: 100%;
+}
+
+.limg {
+    padding: 0px !important;
+}    
+
+.divwid12 {
+    width: 100%;
+}
+.divwid6 {
+    width: 50%;
+}
+
+.istylehead{
+	overflow-x: hidden !important;
+}
+
+.istyleback i {
+    font-size: 3em;
+    font-weight: bold;
+    color: #000;
+    margin-top: 5px;
+    margin-left: -40px;
+}
+
+.istyleback .head{
+    text-align: left;
+    margin-left: -21px;
+}
+
+.istyleback .headtitle{
+    text-align: center;
+}
+
+.istyle i {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+}
+
+.istyle a {
+    border-bottom: none !important;    
+}
+
+.istylehead i {
+    font-size: 22px;
+    font-weight: bold;
+    color: #000;
+    margin-top: 1px;
+}
+.headtitle {
+    margin-left: -35px;
+}
+.head img{
+    padding-top: 10px;
+    margin-left: -15px;
+}
+
+.istylecat i {
+    font-size: 50px;
+    font-weight: bold;
+    color: #000;
+}
+
+.prodgrid {
+    padding: 4% 2% 2%;
+    background: #EEEEE0 !important;        
+}
+
+.gridsec {
+    padding: 18% 2% 2%;
+    background: #EEEEE0 !important;
+}
+
+.prodsec {
+    padding: 16% 2% 0 0;
+    background: #EEEEE0 !important;
+}
+
+.gridsecoth {
+    padding: 18% 2% 2%;
+}
+
+.cellcss {
+    border: 2px #EEEEE0 solid !important;
+    display: inline-block;
+    background-color: #fff;
+    padding: 12px 0px !important;
+    height: 125px;
+}
+.paragold {
+    margin-right: -175px;
+    margin-left: 38px;
+    text-align: center;
+    text-shadow: 0px 0px 0px gold;
+}
+.recup {
+    padding: 5% 0;
+}
+
+.recup h4, p{
+    color: #fff;
+}
+
+.prodrecup h5, p{
+    color: #000;
+        font-weight: bold;
+}
+
+.iconscls{
+    margin-top: 15px;
+    padding-right: 1em;
+}
+
+.iconscls a{
+    padding-left: 6%;
+}
+
+.iconscls i {
+    font-size: 16px;
+}
+
+.istylecat img {
+    width: 50px;
+    height: 50px;
+}
+
+.btnsys {
+    margin-left: 0px !important;
+    cursor: pointer;
+}
+
+.imgsys {
+    padding-top: 7px;
+}
+
+.imgsys a{
+    padding: 5px !important;
+}
+
+.imgsys img{
+    /*padding: 5px !important;*/
+    margin-left: -25px;
+}
+
+.auc1 {
+    background-color: rgb(50, 205, 50);
+    padding-left: 22px;
+}
+
+.auc2 {
+    background-color: rgb(30, 144, 255);
+    padding-left: 22px;
+}
+
+.auc3 {
+    background-color: rgb(255, 0, 0);
+    padding-left: 22px;
+}
+
+.auc4 {
+    background-color: #e4970b;
+    padding-left: 22px;
+}
+
+.accform {
+    padding-top: 2%;
+}
+
+.regform {
+    padding: 1% 6%;
+}
+
+.regform input{
+    margin: 4% 0;
+}
+
+.regform button{
+    display: block;
+    margin: 4% 0;
+}
+
+#chkbox{
+    display: ;
+}
+.headbut {
+    /*width: 100%;*/
+    padding-top: 5px;
+    margin-top: 5px;
+    margin-left: 50%;
+}
+.dropdownlist {
+    width: 100%;
+    background-color: white;
+    text-align: left;
+    border: 1px #ccc solid;
+}
+
+.flooramtback{
+    width: 50%;
+    background: #0198E1;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.15),0 1px 5px rgba(0,0,0,.075);
+}
+
+.flooramtback h4{
+    color: #fff;
+}
+
+.bidamtback{
+    width: 50%;
+    background: #00b300;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.15),0 1px 5px rgba(0,0,0,.075);
+}
+
+.bidamtredback{
+    width: 50%;
+    background: red;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.15),0 1px 5px rgba(0,0,0,.075);
+}
+
+.bidamtredback h4{
+    color: #fff;
+}
+
+.bidamtback h4{
+    color: #fff;
+}
+
+.favsec{
+
+    border-top: solid #fff 12px;
+    background: #BEBEBE;
+}
+
+.pructbidded{
+    text-align: left !important;
+    background: red;
+    color: #fff;
+    }
+
+.divbidgreen{
+    width: 50%;
+    background: red;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.15),0 1px 5px rgba(0,0,0,.075);
+}
+
+.ddcustom{
+    width: 100% !important;
+    height: 40px !important;
+}
+
+.ddopt{
+    /*border-bottom: 2px solid black;*/
+  width: 100%;
+  padding-top: 5%;
+  font-size: 18px;
+}
+/*   @media only screen and (min-width: 316px) {
+.listimg {
+width: 100%;
+}
+}*/
+

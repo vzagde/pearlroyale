@@ -1,0 +1,102 @@
+  <section class="page">
+  	<div class="row istyleback">
+      <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+         <div class="col-sm-3 col-xs-3">
+            <a href="login.html"><i class="fa fa-angle-left"></i></a>
+        </div>
+        <div class="col-sm-2 col-xs-2 head">
+            <a><img src="images/PRLogo.png">
+            </a>
+        </div>
+        <div class="col-sm-7 col-xs-7 headtitle">
+            <a class="navbar-brand">Product List</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+	    <div class="col-xs-6 col-sm-6 listimg">
+	    	<img src="http://casaestilo.in/pearlroyale/assets/uploads/test.jpg">
+	    </div>
+	    <div class="col-xs-6 col-sm-6">
+	    	<h4>Product Name</h4>
+            <p>weight</p>
+            <p>no. of images</p>
+	    </div>
+    </div>
+    <div class="row">
+	    <div class="col-xs-6 col-sm-6" style="background: #0198E1">
+            <h4>floor Amt</h4>
+            <h4>567890</h4>
+	    </div>
+	    <div class="col-xs-6 col-sm-6" style="background: #00b300">
+            <h4>floor Amt</h4>
+            <h4>567890</h4>
+	    </div>
+    </div>
+
+
+   <!--  <div class="row">
+        <div class="divwid6">
+        	 <img src="http://casaestilo.in/pearlroyale/assets/uploads/test.jpg" style="width: 50%">
+        </div>
+        <div class="text-center">
+            <h4>Product Name</h4>
+            <p>weight</p>
+            <p>no. of images</p>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-xs-6 col-sm-6" style="width: 50%; background: #0198E1">
+            <h4>floor Amt</h4>
+            <h4>567890</h4>
+        </div>
+        <div class="col-xs-6 col-sm-6" style="width: 50%; background: #00b300">
+            <h4>floor Amt</h4>
+            <h4>567890</h4>
+        </div>
+    </div>    -->
+  </section>
+    <script type="text/javascript">
+/*        $(document).ready(function() {
+            get_productlist();
+        })
+
+        function get_productlist() {
+            $.ajax({
+                url: 'http://casaestilo.in/pearlroyale/index.php/api/get_product_list/',
+                type: 'post',
+                data: {
+                    auction_id: 11,
+                    category_id: 5
+                },
+                success: function(data) {
+                    console.log(data);
+                    display_product(data);                    
+                }
+            })
+        }
+
+        function display_product(data) {
+            $.each(data, function(index, value) {
+                console.log(value.name);
+                var divfour = $(document.createElement('div'));
+                var diveight = $(document.createElement('div'));
+                var divtwelve = $(document.createElement('div'));
+                var divsix = $(document.createElement('div'));
+                divsix.attr('class','col-xs-6 col-sm-6')
+                diveight.attr('class', 'col-xs-8 col-sm-8')
+                divtwelve.attr('class','col-xs-12 col-sm-12 prodrecup')
+                divfour.attr('class', 'col-xs-4 col-sm-4')
+                var imgsrc = 'http://casaestilo.in/pearlroyale/assets/uploads/'.concat(value.image);
+                var img = $('<img>');
+                img.attr('src', imgsrc);
+                img.attr('class', 'img-responsive');
+                var name = $(document.createElement('h5')).html(value.name);
+                var floor = $(document.createElement('p')).html('Floor Amount USD'.concat(value.floor_amount))
+                var bid = $(document.createElement('p')).html('Bid Amount USD'.concat(value.bid_amount))
+                var content = $(document.createElement('div')).html('weight: 100')
+                $('#productlist').append(divfour.append(img)).append(diveight.append(divtwelve.append(name)).append(divtwelve.append(content)).append(divtwelve.append(floor)).append(divtwelve.append(bid)));
+            })
+        }*/
+    </script>

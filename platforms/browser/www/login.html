@@ -1,0 +1,84 @@
+   <section class="page">
+    <div class="col-sm-12 col-xs-12 istyleback">
+        <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+            <div class="col-sm-2 col-xs-2 head">
+                <a><img src="images/PRLogo.png">
+                </a>
+            </div>
+            <div class="col-sm-8 col-xs-8 headtitle">
+                <a class="navbar-brand">ACCOUNT</a>
+            </div>
+        </div>
+    </div>
+    <div class="row gridsecoth">
+    <div class="col-sm-6 col-md-4">
+        <h4 class="text-center login-title">SIGN IN TO PEARLROYALE</h4>
+        <div class="account-wall">
+        <div class="control-group regform">
+            <input class="form-control" data-validation-required-message="Please enter your email" id="email" placeholder="Email" required="" type="email">
+            <input type="password" id="password" class="form-control" placeholder="Password" required>
+            <p class="help-block" style=""></p>
+            <button onclick="return login();" class="btn btn-lg btn-primary btn-block" type="submit">
+                SIGN IN</button>
+        </div>
+        <div class="text-center">
+            <label onclick="goto_register();" style="width: 100%">Register for New User ?</label>
+            <label onclick="goto_forgotpass();" style="width: 100%">Forgot Password ?</label>
+        </div>
+    </div>
+</div>
+</div>
+  </section>
+      <script>
+      function goto_forgotpass(){
+          document.getElementById('login').style.display = 'none';
+          document.getElementById('forgotpassword').style.display = 'block';
+      }
+
+        function goto_register(){
+          document.getElementById('login').style.display = 'none';
+          document.getElementById('register').style.display = 'block';
+        }
+
+        function validateEmail(email){
+        var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+            if (reg.test(email.value) == false) {
+                alert('Invalid Email Address');
+                return false;
+            } return true; 
+        }   
+
+        function login(){
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+            if(reg.test(email) != false && password != null){
+                $.ajax({
+                    url:'http://pearlroyale.com/pearlroyale_admin/index.php/api/login_user/',
+                    type: 'post',
+                    data: {
+                        username: email,
+                        password: password,
+                    },
+                    success: function(data){                        
+                        console.log(data);
+                        $.each(data, function(index, value){
+                            if (value.id == 0){
+                                alert('Please check the username/password you have entered')
+                            } else {
+                                console.log(value.id);
+                                get_user(value.id);
+                                document.getElementById('user_id').value = value.id;
+                                get_bidded_prod(value.id);
+                                get_notification();
+                                document.getElementById('login').style.display = 'none'
+                                document.getElementById('home').style.display = 'block'
+                            }
+                        })
+                    }
+                })
+            } else { alert('Fill all the fields properly.') }
+        }
+    </script>

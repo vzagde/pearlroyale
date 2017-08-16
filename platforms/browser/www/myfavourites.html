@@ -1,0 +1,100 @@
+    <section class="page" style="background: #EEEEE0">
+        <div class="col-sm-12 col-xs-12 istyleback">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                <label class="col-sm-2 col-xs-2" onclick="go_backfrom_fav();"><i class="fa fa-angle-left"></i></label>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a><img src="images/PRLogo.png">
+                    </a>
+                </div>
+                <div class="col-sm-7 col-xs-7 headtitle">
+                    <a class="navbar-brand">My Favourites</a>
+                </div>
+            </div>
+        </div>
+        <div id="products" class="row gridsec">
+        </div>
+    </section>
+    <script type="text/javascript">
+        function go_backfrom_fav(){
+           $('#products').empty();
+          document.getElementById('myfavourites').style.display = 'none';
+          document.getElementById('home').style.display = 'block';            
+        }
+
+        function get_favourite_prod(user_id) {
+           $('#products').empty();
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_viewed_fav_noti/',
+                type: 'post',
+                data: {
+                    user_id: user_id,
+                    filter: 'favourite'
+                },
+                success: function(data) {
+                    display_fav_data(data);
+                }
+            })
+        }
+
+        function display_fav_data(data) {
+            var variable = 1;
+            $.each(data.productdata, function(index, value) {
+                    if (value.id == 0){
+                        var def = $(document.createElement('h4')).html('There are no favourites list available')                        
+                        $('#products').append(def)
+                    } else {
+                        var imgsrc = 'http://pearlroyale.com/pearlroyale_admin/assets/uploads/'.concat(value.image);
+                        var divcoli = $(document.createElement('div'))
+                        divcoli.attr('class', 'col-xs-6 col-sm-6 limg');
+                        var divcolsixi = $(document.createElement('div'))
+                        divcolsixi.attr('class', 'row listingl-vz');
+                        var divcolsix = $(document.createElement('div'))
+                        divcolsix.attr('class', 'col-xs-6 col-sm-6');
+                        var divrow = $(document.createElement('div'))
+                        divrow.attr('class', 'row prizel-vz');
+                        var divfloor = $(document.createElement('div'))
+                        divfloor.attr('class', 'col-xs-6 col-sm-6 flooramtback');
+                        var divbid = $(document.createElement('div'))
+                        if (value.bid == 2){
+                            divbid.attr('class', 'col-xs-6 col-sm-6 divbidgreen');
+                        } else {
+                            divbid.attr('class', 'col-xs-6 col-sm-6 bidamtback');                            
+                        }
+                        var name = $(document.createElement('h4')).html(value.item_name)
+                        var key = $(document.createElement('h4')).html('Lot No.'+value.item_key)
+                        var floor = $(document.createElement('h5')).html('Floor Amt '+value.currency_type)
+                        var bid = $(document.createElement('h5')).html('Bid Amt '+value.currency_type)
+                        var flooramt = $(document.createElement('h4')).html(value.floor_amount)
+                        var bidamt = $(document.createElement('h4')).html(value.bid_amount)
+                        var divlimitfilter = $(document.createElement('div'))
+                        var favlimitfilters = 'favlimitfilters'+variable;
+                        divlimitfilter.attr('id', favlimitfilters)
+                        divlimitfilter.attr('class', 'col-sm-12 col-xs-12')
+                        filterdata = value.filters;
+                        var img = $('<img>');
+                        img.attr('src', imgsrc);
+                        var space = $(document.createElement('div'))
+                        space.attr('style', 'border: 4px solid #EEEEE0')
+                        $('#products').append(divcolsixi.append(divcoli.append(img)).append(divcolsix.append(name).append(key).append(divlimitfilter))).append(divrow.append(divfloor.append(floor).append(flooramt)).append(divbid.append(bid).append(bidamt)))
+                        load_favlimitfilters(filterdata, favlimitfilters);
+                        variable = variable + 1;
+                    }
+            })
+        }
+
+        function load_favlimitfilters(filterdata, favlimitfilters){
+            var id = '#'+favlimitfilters;
+            $(id).empty();
+            var countfilter = 0;
+            $.each(filterdata, function(index, value){
+                if (countfilter < 2){
+                    if (value.filter_name != undefined){
+                        var filterstr = value.filter_name+' : '+value.filter_value;
+                        var filter = $(document.createElement('p')).html(filterstr);
+                        $(id).append(filter);                        
+                    }
+                }
+                countfilter = countfilter + 1;
+            })            
+        }
+    </script>

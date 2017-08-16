@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <section class="page">
+        <div class="col-sm-12 col-xs-12 istyleback">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                <div class="col-sm-3 col-xs-3">
+                    <a href=""><i class="fa fa-angle-left"></i></a>
+                </div>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a><img src="images/PRLogo.png">
+                    </a>
+                </div>
+                <div class="col-sm-7 col-xs-7 headtitle">
+                    <a class="navbar-brand">Pin</a>
+                </div>
+            </div>
+        </div>
+        <div class="row gridsecoth">
+            <h3 class="text-center login-title">Pin</h3>
+            <div class="account-wall">
+                <div class="control-group regform">
+                        <input type="password" id="pin" class="form-control" placeholder="Pin" required>
+                            <p class="help-block" style=""></p>
+                        <button onclick="return submit_datapin();" class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        $(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
+
+        function submit_datapin(){
+            var pin = document.getElementById('pin').value;
+            $.ajax({
+                url:'http://casaestilo.in/pearlroyale/index.php/api/pin_user/',
+                type: 'post',
+                data: {
+                    pin: pin
+                },
+                success: function(data){
+                    console.log(data);
+                    document.getElementById('register').style.display = 'none';
+                    document.getElementById('home').style.display = 'block';   
+                }
+            })
+        }        
+    </script>
+</body>
+</html>

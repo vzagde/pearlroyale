@@ -1,0 +1,95 @@
+  <section class="page" style="background: #EEEEE0">
+        <div class="col-sm-12 col-xs-12 istyleback">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                <label class="col-sm-2 col-xs-2" onclick="go_backto_home();"><i class="fa fa-angle-left"></i></label>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a><img src="images/PRLogo.png">
+                    </a>
+                </div>
+                <div class="col-sm-8 col-xs-8 headtitle">
+                    <a class="navbar-brand">Recently Viewed</a>
+                </div>
+            </div>
+        </div>
+        <div id="viwedproducts" class="row gridsec">
+        </div>
+    </section>
+    <script type="text/javascript">
+        function go_backto_home(){
+            $('#viwedproducts').empty();
+            document.getElementById('recentlyviewed').style.display = 'none';
+            document.getElementById('home').style.display = 'block';            
+        }
+
+        function get_prod_viewed(user_id) {
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_viewed_fav_noti/',
+                type: 'post',
+                data: {
+                    user_id: user_id,
+                    filter: 'viewed'
+                },
+                success: function(data) {
+                    display_prod_viewed(data);
+                }
+            })
+        }
+
+        function display_prod_viewed(data) {
+            var variable = 1;
+            $.each(data.productdata, function(index, value) {
+                    if (value.id == 0){
+                        var def = $(document.createElement('p')).html('There are no favourites list available')
+                        $('#viwedproducts').append(def)
+                    } else {
+                    var imgsrc = 'http://pearlroyale.com/pearlroyale_admin/assets/uploads/'.concat(value.image);
+                    var divcoli = $(document.createElement('div'))
+                    divcoli.attr('class', 'col-xs-6 col-sm-6 limg');
+                    var divcolsixi = $(document.createElement('div'))
+                    divcolsixi.attr('class', 'row listingl-vz');
+                    var divcolsix = $(document.createElement('div'))
+                    divcolsix.attr('class', 'col-xs-6 col-sm-6');
+                    var divrow = $(document.createElement('div'))
+                    divrow.attr('class', 'row prizel-vz');
+                    var divfloor = $(document.createElement('div'))
+                    divfloor.attr('class', 'col-xs-6 col-sm-6 flooramtback');
+                    var divbid = $(document.createElement('div'))
+                    divbid.attr('class', 'col-xs-6 col-sm-6 bidamtback');
+                    var name = $(document.createElement('h4')).html(value.item_name)
+                    var key = $(document.createElement('h4')).html('Lot No.'+value.item_key)
+                    var floor = $(document.createElement('h5')).html('Floor Amt '+value.currency_type)
+                    var bid = $(document.createElement('h5')).html('Bid Amt '+value.currency_type)
+                    var flooramt = $(document.createElement('h4')).html(value.floor_amount)
+                    var bidamt = $(document.createElement('h4')).html(value.bid_amount)
+                    var divlimitfilter = $(document.createElement('div'))
+                    var viewdlimitfilters = 'viewdlimitfilters'+variable;
+                    divlimitfilter.attr('id', viewdlimitfilters)
+                    divlimitfilter.attr('class', 'col-sm-12 col-xs-12')
+                    filterdata = value.filters;
+                    var img = $('<img>');
+                    img.attr('src', imgsrc);
+                    var space = $(document.createElement('div'))
+                    space.attr('style', 'border: 4px solid #EEEEE0')
+                    $('#viwedproducts').append(divcolsixi.append(divcoli.append(img)).append(divcolsix.append(name).append(key).append(divlimitfilter))).append(divrow.append(divfloor.append(floor).append(flooramt)).append(divbid.append(bid).append(bidamt)))
+                    load_viewdlimitfilters(filterdata, viewdlimitfilters);
+                    variable = variable + 1;
+                }
+            })
+        }
+
+        function load_viewdlimitfilters(filterdata, viewdlimitfilters){
+            var id = '#'+viewdlimitfilters;
+            $(id).empty();
+            var countfilter = 0;
+            $.each(filterdata, function(index, value){
+                if (countfilter < 2){
+                    if (value.filter_name != undefined){
+                        var filterstr = value.filter_name+' : '+value.filter_value;
+                        var filter = $(document.createElement('p')).html(filterstr);
+                        $(id).append(filter);                        
+                    }
+                }
+                countfilter = countfilter + 1;
+            })            
+        }        
+    </script>

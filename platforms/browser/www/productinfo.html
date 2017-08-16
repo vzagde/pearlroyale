@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Pearl Royale</title>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/navmenu.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/jasny-bootstrap.min.css" rel="stylesheet">
+    <!--     <link href="css/carousel.css" rel="stylesheet"> -->
+  </head>
+  <body>
+  <section class="page">
+
+        <div class="row istyleback">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg col-sm-12 col-xs-12">
+                <div class="col-sm-3 col-xs-3">
+                    <a href="login.html"><i class="fa fa-angle-left"></i></a>
+                </div>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a><img src="images/PRLogo.png"></a>
+                </div>
+                <div class="col-sm-7 col-xs-7 headtitle">
+                    <a class="navbar-brand">Category Name</a>
+                </div>
+                <!-- <div class="col-sm-4 col-xs-4 iconscls">
+                    <a><i class="fa fa-star"></i></a>
+                </div> -->
+            </div>
+        </div> 
+
+       <!--  Slider -->
+        <div class="testimonials">
+            <div class="testimonial-slider">
+                <div class="t-slide">
+                    <img src="images/img1.jpg">
+                </div>
+                <div class="t-slide">
+                    <img src="images/img2.jpg">
+                </div>
+                <div class="t-slide">
+                    <img src="images/img3.jpg">
+                </div>
+            </div><!-- end testimonials list -->
+        </div><!-- end testimonial container -->
+
+        
+    <div class="row col-xs-12 col-sm-12">
+        <div class="col-xs-6 col-sm-6 divwid6 listimg">
+        <span>
+             <img src="http://casaestilo.in/pearlroyale/assets/uploads/test.jpg">
+        </span>
+        </div>
+        <div class="col-xs-6 col-sm-6 divwid6 text-center">
+            <h4>Product Name</h4>
+            <p>weight</p>
+            <p>no. of images</p>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-xs-6 col-sm-6" style="width: 50%; background: #0198E1">
+            <h4>floor Amt</h4>
+            <h4>567890</h4>
+        </div>
+        <div class="col-xs-6 col-sm-6" style="width: 50%; background: #00b300">
+            <h4>floor Amt</h4>
+            <h4>567890</h4>
+        </div>
+    </div> 
+     
+    </section>
+    <!-- All The JS Files -->
+    <script type="text/javascript" src="js/slider/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="js/slider/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="js/slider/custom.js"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+/*<!--     <script type="text/javascript">
+    $(document).ready(function(){
+        create_uirel();
+        get_data();
+    })
+
+    function create_uirel(){
+        $.ajax({
+            url:'http://casaestilo.in/pearlroyale/index.php/api/rel_exists/',
+            type: 'post',
+            data: {
+                user_id : 1, //id from users table
+                product_id : 15 //id from filter table
+            },
+            success: function(data){
+                chk_bid();
+            }            
+        })        
+    }
+
+    function get_data(){
+        $.ajax({
+            url:'http://casaestilo.in/pearlroyale/index.php/api/get_products_info/',
+            type: 'post',
+            data: {
+                product_id : 15
+            },
+            success: function(data){
+                display_data(data);
+            }            
+        })        
+    }
+
+    function display_data(data){
+        $.each(data,function(index, value){
+            var name = $(document.createElement('h4')).html(value.name)
+            var bid_amount = $(document.createElement('p')).html(value.bid_amount)
+            var identity = $(document.createElement('p')).html(value.id)
+            $('#productname').append(name).append(bid_amount);
+            $.each(value.additional_data,function(index, value){
+                var cnst = $(document.createElement('p')).html(value.constraint);
+                var val = $(document.createElement('p')).html(value.default_value);
+/*                var str = $(document.createElement('h5')).html(value.constraint.concat(value.default_value));*/
+            $('#filters').append(cnst);
+            })
+        })
+    }
+    
+    function chk_bid(){
+        $.ajax({
+            url:'http://casaestilo.in/pearlroyale/index.php/api/check_bid_status/',
+            type: 'post',
+            data: {
+                user_id : 2,
+                product_id : 15
+            },
+            success: function(data){
+                data = data[0];
+                if (data.bid == 2) {
+                    hide_button();
+                };
+            }            
+        })        
+    }
+
+    function hide_button(){
+        $('#bidButton').hide();
+    }
+
+    function setfavourite(){
+        $.ajax({
+            url:'http://casaestilo.in/pearlroyale/index.php/api/set_product_flag/',
+            type: 'post',
+            data: {
+                user_id : 2,
+                product_id : 15,
+                filter : 'f'
+
+            },
+            success: function(data){
+                alert(data);
+            }            
+        })   
+    }
+    </script>
+ -->*/    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jqBootstrapValidation.js"></script>
+    <script src="js/jasny-bootstrap.min.js"></script>  </body>
+</html>

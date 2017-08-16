@@ -1,0 +1,53 @@
+    <section class="page">
+        <div class="col-sm-12 col-xs-12 istyleback">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                <label class="col-sm-2 col-xs-2" onclick="go_backfrom_notify();"><i class="fa fa-angle-left"></i></label>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a><img src="images/PRLogo.png">
+                    </a>
+                </div>
+                <div class="col-sm-4 col-xs-4 headtitle">
+                    <a class="navbar-brand">Notifications</a>
+                </div>
+            </div>
+        </div>
+        <div style="background: #c3c3c3"></div>
+        <div id="productsnotify" class="row gridsec">
+            <div class="notify-vz">
+                <p>Pearlroyale Content</p>
+            </div>
+            <div class="notify-vz">
+                <p>Pearlroyale Content</p>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+
+        function go_backfrom_notify(){
+        $('#productsnotify').empty();
+          document.getElementById('notifications').style.display = 'none';
+          document.getElementById('home').style.display = 'block';            
+        }
+
+        function get_notification_product(user_id) {
+        $('#productsnotify').empty();
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_notification_content/',
+                type: 'post',
+                success: function(data) {
+                    display_notification_product(data);
+                }
+            })
+        }
+
+        function display_notification_product(data) {
+            $.each(data, function(index, value) {
+                console.log(value.text);
+                var sec = $(document.createElement('div'))
+                sec.attr('class', 'notify-vz');
+                var con = $(document.createElement('p')).html(value.text);
+                $('#productsnotify').append(sec.append(con))
+            })
+        }
+
+    </script>

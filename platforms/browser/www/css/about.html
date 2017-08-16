@@ -1,0 +1,49 @@
+  <section class="page">
+        <div class="col-sm-12 col-xs-12 istyleback">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+                <div class="col-sm-3 col-xs-3">
+                    <label onclick="go_backfrom_about();"><i class="fa fa-angle-left"></i></label>
+                </div>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a><img src="images/PRLogo.png">
+                    </a>
+                </div>
+                <div class="col-sm-7 col-xs-7 headtitle">
+                    <a class="navbar-brand">About</a>
+                </div>
+            </div>
+        </div>
+        <div class="row gridsecoth">
+            <h3 class="text-center login-title">About Pearl Royale</h3>
+            <div class="col-xs-12 col-sm-12 recup">
+                <p class="paragold-vz" id="paragold">
+                </p>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            get_about_us();
+        });
+
+        function go_backfrom_about(){
+            $('#productbid').empty();
+            document.getElementById('about').style.display = 'none';
+            document.getElementById('home').style.display = 'block';
+        }
+
+        function get_about_us(){
+            $.ajax({
+                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_about_us',
+                datatype: 'json',
+                success: function(data) {
+                    console.log(data);
+                    $.each(data, function(index, value) {
+                        var txt = $(document.createElement('p')).html(value.content);
+                        $("#paragold").append(txt);
+                    });
+                }
+            })
+        }
+
+    </script>    

@@ -1,0 +1,101 @@
+<section class="page">
+    <div class="col-sm-12 col-xs-12 istyleback">
+        <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+            <label onclick="go_to_login();" class="col-sm-2 col-xs-2"><i class="fa fa-angle-left"></i></label>
+            <div class="col-sm-2 col-xs-2 head">
+                <a><img src="images/PRLogo.png"></a>
+            </div>
+            <div class="col-sm-4 col-xs-4 headtitle">
+                <a class="navbar-brand">Register</a>
+            </div>
+        </div>
+    </div>
+    <div class="row gridsecoth">
+        <h4 class="text-center login-title">Register To Pearl Royale</h4>
+        <div class="account-wall">
+            <div class="control-group regform">
+                    <input onFocus="chnge_height()" onblur="min_height()" class="form-control" data-validation-required-message="Please enter your first name" id="fname" placeholder="First Name" required="" type="text">
+                    <input onFocus="chnge_height()" onblur="min_height()" class="form-control" data-validation-required-message="Please enter your last name" id="lname" placeholder="Last Name" required="" type="text">
+                    <input onFocus="chnge_height()" onblur="min_height()" class="form-control" data-validation-required-message="Please enter your Company name" id="cname" placeholder="Company Name" required="" type="text">
+                    <input onFocus="chnge_height()" onblur="min_height()" class="form-control" data-validation-required-message="Please enter your email" id="newemail" placeholder="Email" required="" type="email">
+                    <input onFocus="chnge_height()" onblur="min_height()" id="tel" type="tel" class="form-control" placeholder="Phone Number" required>
+                    <input onFocus="chnge_height()" onblur="min_height()" class="form-control" data-validation-required-message="Please enter Country" id="country" placeholder="Country" required="" type="text">
+                    <input onfocus="chnge_height()" onblur="min_height()" class="form-control" data-validation-required-message="Please enter City" id="city" placeholder="City" required="" type="text">
+<!--                         <button class="btn dropdown-toggle dropdownlist" data-toggle="dropdown">City<span class="caret"></span>
+                        <ul id="city" class="dropdown-menu">
+                            <li>City 1</li>
+                            <li>City 2</li>
+                        </ul>
+                        </button>
+                        <button class="btn dropdown-toggle dropdownlist" data-toggle="dropdown">Country<span class="caret"></span>
+                        <ul id="country" class="dropdown-menu">
+                            <li>Country 1</li>
+                            <li>Country 2</li>
+                        </ul> -->
+                        </button>
+                        <input id="chkbox" type="checkbox" value="remember-me" required>
+                        <strong>I agree to the Pearl Royale <a target="_blank" id="TosLink" href="https://accounts.google.com/TOS?loc=IN&hl=en">Terms of Service</a> and <a target="_blank" id="PrivacyLink" href="https://accounts.google.com/TOS?loc=IN&hl=en&privacy=true">Privacy Policy</a></strong>
+                        <p class="help-block" style=""></p>
+                    <button onclick="return submit_data();" class="btn btn-lg btn-primary btn-block" type="submit">
+                        Register</button>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+
+    function chnge_height(){
+        $("#gridsecoth").animate({height: "350px"});
+    }
+
+    function min_height(){
+        $("#gridsecoth").animate({height: 'auto'});
+    }
+
+    function go_to_login(){
+        document.getElementById('register').style.display = 'none';
+        document.getElementById('login').style.display = 'block';            
+    }
+
+    function validateEmail(email){
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+        if (reg.test(email.value) == false) {
+            alert('Invalid Email Address');
+            return false;
+        } return true; 
+    }   
+
+    function submit_data(){
+        var fname = document.getElementById('fname').value;
+        var lname = document.getElementById('lname').value;
+        var email = document.getElementById('newemail').value;
+        var city = document.getElementById('city').value;
+        var country = document.getElementById('country').value;
+        var company = document.getElementById('cname').value;
+        var tel = document.getElementById('tel').value;
+
+        if(fname != '' && lname != '' && password != '' && tel != '' && email != ''){
+            $.ajax({
+                url:'http://pearlroyale.com/pearlroyale_admin/index.php/api/register_user/',
+                type: 'post',
+                data: {
+                    email: email,
+                    fname: fname,
+                    lname: lname,
+                    tel: tel,
+                    city: city,
+                    country: country,
+                    company: company
+                },
+                success: function(data){
+                    get_user(data.user_id);
+                    document.getElementById('user_id').value = data.user_id;
+                    document.getElementById('register').style.display = 'none';
+                    alert("Check our welcome mail for password.");
+                    document.getElementById('login').style.display = 'block';
+                }
+            })
+        } else { alert('Fill all the fields') }
+    }        
+</script>

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.nightlybuilds.com" version="0.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
+    <feature name="Device">
+        <param name="browser-package" value="Device" />
+    </feature>
+    <name>Pearlroyale</name>
+    <description>
+    </description>
+    <author email="info@pearlroyale.com" href="http://phonegap.com">
+    </author>
+    <content src="index.html" />
+    <gap:plugin name="org.apache.cordova.battery-status" />
+    <gap:plugin name="org.apache.cordova.camera" />
+    <gap:plugin name="org.apache.cordova.media-capture" />
+    <gap:plugin name="org.apache.cordova.console" />
+    <gap:plugin name="org.apache.cordova.contacts" />
+    <gap:plugin name="org.apache.cordova.device" />
+    <gap:plugin name="org.apache.cordova.device-motion" />
+    <gap:plugin name="org.apache.cordova.device-orientation" />
+    <gap:plugin name="org.apache.cordova.dialogs" />
+    <gap:plugin name="org.apache.cordova.file" />
+    <gap:plugin name="org.apache.cordova.file-transfer" />
+    <gap:plugin name="org.apache.cordova.geolocation" />
+    <gap:plugin name="org.apache.cordova.globalization" />
+    <gap:plugin name="org.apache.cordova.inappbrowser" />
+    <gap:plugin name="org.apache.cordova.media" />
+    <gap:plugin name="org.apache.cordova.network-information" />
+    <gap:plugin name="org.apache.cordova.splashscreen" />
+    <gap:plugin name="org.apache.cordova.vibration" />
+    <icon density="mdpi" height="57" platform="android" src="ios/icon.png" width="57" />
+    <icon height="180" src="ios/icon-60@3x.png" width="180" />
+    <icon height="60" src="ios/icon-60.png" width="60" />
+    <icon height="120" src="ios/icon-60@2x.png" width="120" />
+    <icon height="76" src="ios/icon-76.png" width="76" />
+    <icon height="152" src="ios/icon-76@2x.png" width="152" />
+    <icon height="40" src="ios/icon-40.png" width="40" />
+    <icon height="80" src="ios/icon-40@2x.png" width="80" />
+    <icon height="57" src="ios/icon.png" width="57" />
+    <icon height="114" src="ios/icon@2x.png" width="114" />
+    <icon height="72" src="ios/icon-72.png" width="72" />
+    <icon height="144" src="ios/icon-72@2x.png" width="144" />
+    <icon height="29" src="ios/icon-small.png" width="29" />
+    <icon height="58" src="ios/icon-small@2x.png" width="58" />
+    <icon height="50" src="ios/icon-50.png" width="50" />
+    <icon height="100" src="ios/icon-50@2x.png" width="100" />
+    <access origin="*" />
+    <preference name="permissions" value="none" />
+    <preference name="phonegap-version" value="3.5.0" />
+    <preference name="orientation" value="portrait" />
+    <preference name="target-device" value="universal" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <preference name="prerendered-icon" value="true" />
+    <preference name="stay-in-webview" value="false" />
+    <preference name="ios-statusbarstyle" value="black-opaque" />
+    <preference name="detect-data-types" value="true" />
+    <preference name="exit-on-suspend" value="false" />
+    <preference name="show-splash-screen-spinner" value="true" />
+    <preference name="auto-hide-splash-screen" value="true" />
+    <preference name="disable-cursor" value="false" />
+    <preference name="android-minSdkVersion" value="7" />
+    <preference name="android-installLocation" value="auto" />
+</widget>

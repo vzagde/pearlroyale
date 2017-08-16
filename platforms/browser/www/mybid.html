@@ -1,0 +1,96 @@
+<section class="page" style="background: #EEEEE0">
+    <div class="col-sm-12 col-xs-12 istyleback">
+        <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
+            <label class="col-sm-2 col-xs-2" onclick="go_backfrom_mybid();"><i class="fa fa-angle-left"></i></label>
+            <div class="col-sm-2 col-xs-2 head">
+                <a><img src="images/PRLogo.png">
+                </a>
+            </div>
+            <div class="col-sm-5 col-xs-5 headtitle">
+                <a class="navbar-brand">My Bid</a>
+            </div>
+        </div>
+    </div>
+    <div id="bidproducts" class="row gridsec">
+    </div>
+</section>
+<script type="text/javascript">
+    function go_backfrom_mybid(){
+      $('#bidproducts').empty();  
+      document.getElementById('mybid').style.display = 'none';
+      document.getElementById('home').style.display = 'block';            
+    }
+
+    function get_bid_list(user_id) {
+        console.log(user_id);
+        $.ajax({
+            url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_bid_list/',
+            type: 'post',
+            data: {
+                user_id: user_id,
+            },
+            success: function(data) {
+                display_bidded_data(data);
+            }
+        })
+    }
+
+    function display_bidded_data(data) {
+        var variable = 1;
+        $.each(data.productdata, function(index, value) {
+            if (value.id == 0){
+                var def = $(document.createElement('p')).html("You haven't bidded any product yet!")                        
+                $('#bidproducts').append(def)
+            } else {
+                var anchor = $(document.createElement('a'));
+                var imgsrc = 'http://pearlroyale.com/pearlroyale_admin/assets/uploads/'.concat(value.image);
+                var divcoli = $(document.createElement('div'))
+                divcoli.attr('class', 'col-xs-6 col-sm-6 limg');
+                var divcolsixi = $(document.createElement('div'))
+                divcolsixi.attr('class', 'row listingl-vz');
+                var divcolsix = $(document.createElement('div'))
+                divcolsix.attr('class', 'col-xs-6 col-sm-6');
+                var divrow = $(document.createElement('div'))
+                divrow.attr('class', 'row prizel-vz');
+                var divfloor = $(document.createElement('div'))
+                divfloor.attr('class', 'col-xs-6 col-sm-6 flooramtback');
+                var divbid = $(document.createElement('div'))
+                divbid.attr('class', 'col-xs-6 col-sm-6 bidamtredback');
+                var name = $(document.createElement('h4')).html(value.item_name)
+                var key = $(document.createElement('h4')).html('Lot No.'+value.item_key)
+                var floor = $(document.createElement('h5')).html('Floor Amt '+value.currency_type)
+                var bid = $(document.createElement('h5')).html('Bid Amt '+value.currency_type)
+                var flooramt = $(document.createElement('h4')).html(value.floor_amount)
+                var bidamt = $(document.createElement('h4')).html(value.bid_amount)
+                var divlimitfilter = $(document.createElement('div'))
+                var mybidlimitfilters = 'mybidlimitfilters'+variable;
+                divlimitfilter.attr('id', mybidlimitfilters)
+                divlimitfilter.attr('class', 'col-sm-12 col-xs-12')
+                filterdata = value.filters;
+                var img = $('<img>');
+                img.attr('src', imgsrc);
+                var space = $(document.createElement('div'))
+                space.attr('style', 'border: 4px solid #EEEEE0')
+                $('#bidproducts').append(divcolsixi.append(divcoli.append(img)).append(divcolsix.append(name).append(key).append(divlimitfilter))).append(divrow.append(divfloor.append(floor).append(flooramt)).append(divbid.append(bid).append(bidamt)))
+                load_mybidlimitfilters(filterdata, mybidlimitfilters);
+                variable = variable + 1;
+            }
+        })
+    }
+
+        function load_mybidlimitfilters(filterdata, mybidlimitfilters){
+            var id = '#'+mybidlimitfilters;
+            $(id).empty();
+            var countfilter = 0;
+            $.each(filterdata, function(index, value){
+                if (countfilter < 2){
+                    if (value.filter_name != undefined){
+                        var filterstr = value.filter_name+' : '+value.filter_value;
+                        var filter = $(document.createElement('p')).html(filterstr);
+                        $(id).append(filter);                        
+                    }
+                }
+                countfilter = countfilter + 1;
+            })            
+        }
+</script>

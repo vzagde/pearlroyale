@@ -1,0 +1,54 @@
+	<div class="gridlock demo">
+        <div class="row istyleback">
+            <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg col-sm-12 col-xs-12">
+                <div class="col-sm-3 col-xs-3">
+                    <label onclick="go_backfrom_imageview();"><i class="fa fa-angle-left"></i></label>
+                </div>
+                <div class="col-sm-2 col-xs-2 head">
+                    <a><img src="images/PRLogo.png"></a>
+                </div>
+                <div class="col-sm-7 col-xs-7 headtitle">
+                </div>
+            </div>
+        </div> 		
+		<h4 style="margin: 10%; padding: 10%">Tap to Zoom In the Image</h4>
+		<div id="imageview" class="">
+			<div id="imagepreview">
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function loadimageviewdata(id){
+		    $.ajax({
+		        url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_single_image/',
+		        type: 'post',
+		        data: {
+		            id : id
+		        },
+		        success: function(data){
+		        	console.log(data);
+		        	$.each(data , function(index, value){
+						var imgurl = 'http://pearlroyale.com/pearlroyale_admin/assets/uploads/'.concat(value.image);
+			            var img = $('<img>');
+			            img.attr('class', 'img-zoom');
+			            img.attr('src', imgurl);
+						$('#imagepreview').append(img);
+		        	})
+		        }
+		    })
+		}
+
+		function go_backfrom_imageview(){
+				$('#imagepreview').empty();
+                document.getElementById('imageview').style.display = 'none';			
+                document.getElementById('bid').style.display = 'block';
+		}
+	</script>
+	<script>
+	  $(document).ready(function(){
+	    $('#imageview').click(function() {
+	        $('.img-zoom').toggleClass('transition');
+	 
+	    });
+	  });
+	</script>
