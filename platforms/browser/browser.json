@@ -20,6 +20,9 @@
     "installed_plugins": {
         "org.apache.cordova.device": {
             "PACKAGE_NAME": "com.nightlybuilds.com"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.nightlybuilds.com"
         }
     },
     "dependent_plugins": {},
@@ -40,6 +43,7 @@
         }
     ],
     "plugin_metadata": {
-        "org.apache.cordova.device": "0.3.0"
+        "org.apache.cordova.device": "0.3.0",
+        "cordova-plugin-whitelist": "1.2.2"
     }
 }
