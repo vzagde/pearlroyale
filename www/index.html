@@ -73,8 +73,9 @@
         }
 
         function onBackKeyDown(e) {
-            console.log(e);
+            console.log("<==BACKBUTTON FIRES==>");
             e.preventDefault();
+            return false;
         }
 
         $('div[data-include]').each(function() {
