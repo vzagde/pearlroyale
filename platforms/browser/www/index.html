@@ -15,42 +15,55 @@
     <link rel="stylesheet" type="text/css" href="css/slideshow.css">    
     <link rel="stylesheet" href="css/slider/nivo-slider.css" type="text/css" />
     <link rel="stylesheet" href="css/slider/nivo-slider.css" type="text/css" />
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css" /> -->
 	
 </head>
-<body onload="backdisabled();">
-    <div id="login" data-include="login"></div>
-    <div id="home" data-include="home"></div>
-    <div id="register" data-include="register"></div>
-    <div id="myaccount" data-include="myaccount"></div>
-    <div id="auction" data-include="auctions"></div>
-    <div id="prodlist" data-include="prolist"></div>
-    <div id="imageview" data-include="imageview"></div>
-    <div id="bid" data-include="bid"></div>
-    <div id="makebid" data-include="makebid"></div>
-    <div id="mybid" data-include="mybid"></div>
-    <div id="recentlyviewed" data-include="recentlyviewed"></div>
-    <div id="myfavourites" data-include="myfavourites"></div>
-    <div id="notifications" data-include="notifications"></div>
-    <div id="about" data-include="about"></div>
-    <div id="forgotpassword" data-include="forgotpassword"></div>
+
+<!-- onload="backdisabled();" -->
+<body >
+
+    <div class="pageid" id="login" data-include="login"></div>
+
+    <div class="pageid" id="home" data-include="home"></div>
+    <div class="pageid" id="register" data-include="register"></div>
+    <div class="pageid" id="myaccount" data-include="myaccount"></div>
+    <div class="pageid" id="auction" data-include="auctions"></div>
+    <div class="pageid" id="prodlist" data-include="prolist"></div>
+    <div class="pageid" id="imageview" data-include="imageview"></div>
+    <div class="pageid" id="bid" data-include="bid"></div>
+    <div class="pageid" id="makebid" data-include="makebid"></div>
+    <div class="pageid" id="mybid" data-include="mybid"></div>
+    <div class="pageid" id="recentlyviewed" data-include="recentlyviewed"></div>
+    <div class="pageid" id="myfavourites" data-include="myfavourites"></div>
+    <div class="pageid" id="notifications" data-include="notifications"></div>
+    <div class="pageid" id="about" data-include="about"></div>
+    <div class="pageid" id="forgotpassword" data-include="forgotpassword"></div>
+
     <input type="hidden" id="user_id" name="user_id">
     <input type="hidden" id="prod_id" name="prod_id">
     <input type="hidden" id="cat_id" name="cat_id">
     <input type="hidden" id="auc_id" name="auc_id">
     <input type="hidden" id="bid_time" name="bid_time">
 
+
+    <script type="text/javascript" src="cordova.js"></script>
     <script src="js/jquery.min.js" type="text/javascript"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script> -->
+
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
     <script src="js/index.js"></script>
-    <script src="js/cordova-1.9.0.js"></script>
+    <!-- <script src="js/cordova-1.9.0.js"></script> -->
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/jqBootstrapValidation.js"></script>
     <script src="js/jasny-bootstrap.min.js"></script>
     <link href="css/jquery.growl.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript">
+
         $(document).ready(function(){
+
             document.getElementById('login').style.display = 'block'
             document.getElementById('home').style.display = 'none'
             document.getElementById('register').style.display = 'none';
@@ -66,20 +79,17 @@
             document.getElementById('about').style.display = 'none';
             document.getElementById('notifications').style.display = 'none';
             document.getElementById('forgotpassword').style.display = 'none';
+
+
+            // console.log($('.pageid').attr('data-include'));
+
         })
         
-        function backdisabled(){
-            document.addEventListener("backbutton", onBackKeyDown, false);
-        }
-
-        function onBackKeyDown(e) {
-            console.log(e);
-            e.preventDefault();
-        }
-
+ 
         $('div[data-include]').each(function() {
             $(this).load( $(this).attr('data-include') + '.html').trigger('create');
         });
+
     </script>
     <script src="js/jquery.growl.js" type="text/javascript"></script>
     </body>

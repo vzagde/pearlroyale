@@ -163,18 +163,20 @@
         }, 5000);
 
         function get_prodbid_refreshbiddata(){
-            var pro_id = document.getElementById('prod_id').value
-            $.ajax({
-                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_bid_amount/',
-                type: 'post',
-                data: {
-                    product_id: pro_id
-                },
-                success: function(data) {
-                    display_refresh_bid(data);
-                    chk_bid();
-                }
-            })
+            var pro_id = document.getElementById('prod_id').value;
+            if (pro_id) {
+                $.ajax({
+                    url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_bid_amount/',
+                    type: 'post',
+                    data: {
+                        product_id: pro_id
+                    },
+                    success: function(data) {
+                        display_refresh_bid(data);
+                        chk_bid();
+                    }
+                })
+            }
         }
 
         function display_refresh_bid(data){

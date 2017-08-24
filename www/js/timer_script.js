@@ -85,6 +85,9 @@ function _timer(callback)
     // This methode will render the time variable to hour:minute:second format
     function generateTime()
     {
+
+
+        
         console.log("entered into the function");
         var second = time % 60;
         var minute = Math.floor(time / 60) % 60;

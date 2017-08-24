@@ -69,7 +69,7 @@
                             var hr = $(document.createElement('hr'))
                             $('.auc1').append(title).append(hr);
                         } else {
-                            // if( curr_date > start && curr_date < end ){
+                            if( curr_date > start && curr_date < end ){
                                 var anchor = $(document.createElement('a'));
                                 anchor.attr('id', value.id)
                                 anchor.attr('onClick', 'showProductlist(this.id);')
@@ -81,8 +81,8 @@
                                 var hr = $(document.createElement('hr'))
                                 hr.attr('class', 'martb10')
                                 $('.auc1').append(anchor.append(title).append(content)).append(hr);
-                            // }
-                            // if( curr_date < start ){
+                            }
+                            if( curr_date < start ){
                                 var anchor = $(document.createElement('a'));
                                 anchor.attr('id', value.id)
                                 anchor.attr('onClick', 'showProductlist(this.id);')
@@ -94,8 +94,8 @@
                                 var hr = $(document.createElement('hr'))
                                 hr.attr('class', 'martb10')
                                 $('.auc2').append(anchor.append(title).append(content)).append(hr);
-                            // }
-                            // if( curr_date > end && curr_date < archive ){
+                            }
+                            if( curr_date > end && curr_date < archive ){
                                 var anchor = $(document.createElement('a'));
                                 anchor.attr('id', value.id)
                                 anchor.attr('onClick', 'showProductlist(this.id);')
@@ -107,7 +107,7 @@
                                 var hr = $(document.createElement('hr'))
                                 hr.attr('class', 'martb10')
                                 $('.auc3').append(anchor.append(title).append(content)).append(hr);
-                            // }
+                            }
                         }
                     })
                 }

@@ -77,17 +77,19 @@
 
         function get_prodbid_refreshdata(){
             id = document.getElementById('prod_id').value;
-            $.ajax({
-                url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_bid_amount/',
-                type: 'post',
-                data: {
-                    product_id: id
-                },
-                success: function(data) {
-                    display_refresh_makebid(data);
-                    check_bid_status();
-                }
-            })
+            if (id) {
+                $.ajax({
+                    url: 'http://pearlroyale.com/pearlroyale_admin/index.php/api/get_bid_amount/',
+                    type: 'post',
+                    data: {
+                        product_id: id
+                    },
+                    success: function(data) {
+                        display_refresh_makebid(data);
+                        check_bid_status();
+                    }
+                })
+            }
         }
 
         function display_refresh_makebid(data){
