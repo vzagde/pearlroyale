@@ -5,6 +5,10 @@
         })
 
         function chk_user_sign(){
+
+            $("#loader").show();
+
+
             $.ajax({
                 url:'http://pearlroyale.com/pearlroyale_admin/index.php/api/chk_user_signin/',
                 datatype: 'json',
@@ -26,6 +30,11 @@
                         document.getElementById('myfavourites').style.display = 'none';
                         document.getElementById('about').style.display = 'none';
                         document.getElementById('notifications').style.display = 'none';
+
+                        $("#loader").hide();
+                        
+
+
                     } else {
                         get_user(data.id);
                         document.getElementById('user_id').value = data.id;
@@ -45,6 +54,9 @@
                         document.getElementById('myfavourites').style.display = 'none';
                         document.getElementById('about').style.display = 'none';
                         document.getElementById('notifications').style.display = 'none';
+
+                        $("#loader").hide();
+                        
 
                     }
                 }

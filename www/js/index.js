@@ -32,15 +32,25 @@ var app = {
 
     },
     onBackKeyDown: function(){
+
+
         // alert($('.pageid:visible').attr('data-include'));
+
+
         if($('.pageid:visible').attr('data-include') == "login" || $('.pageid:visible').attr('data-include') == "home"){
+
             navigator.app.exitApp();
+
         }
+
         // alert('back clicked');
         // alert($('.pageid').attr('data-include'));
         // console.log('Received Event: ' + id);
         // document.addEventListener("backbutton", onBackKeyDown, false);
+
     }
+
+
 };
 
 
